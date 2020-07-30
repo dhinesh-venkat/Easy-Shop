@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import './screens/homepage.dart';
 import './services/group_service.dart';
+import './services/sub_group_service.dart';
 
 void setupLocator() {
   GetIt.I.registerLazySingleton(() => GroupService());
+  GetIt.I.registerLazySingleton(() => SubGroupService());
 }
 
 void main() {

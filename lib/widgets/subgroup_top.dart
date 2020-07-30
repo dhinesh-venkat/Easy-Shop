@@ -1,87 +1,81 @@
 import 'package:easy_shop/models/sub_group.dart';
+import 'package:easy_shop/services/sub_group_service.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import '../models/sub_group.dart';
+import '../models/api_response.dart';
 
-class SubGroupTop extends StatelessWidget {
+class SubGroupTop extends StatefulWidget {
   //const SubGroupTop({Key key}) : super(key: key);
 
-  List<SubGroup> _subGroups = [
-    SubGroup(
-        id: "1",
-        value: "One",
-        imageUrl:
-            "https://cdn.pixabay.com/photo/2012/04/18/20/21/strawberry-37781_960_720.png"),
-    SubGroup(
-        id: "2",
-        value: "Two",
-        imageUrl:
-            "https://cdn.pixabay.com/photo/2012/04/18/20/21/strawberry-37781_960_720.png"),
-    SubGroup(
-        id: "3",
-        value: "Three",
-        imageUrl:
-            "https://cdn.pixabay.com/photo/2012/04/18/20/21/strawberry-37781_960_720.png"),
-    SubGroup(
-        id: "4",
-        value: "Four",
-        imageUrl:
-            "https://cdn.pixabay.com/photo/2012/04/18/20/21/strawberry-37781_960_720.png"),
-    SubGroup(
-        id: "5",
-        value: "Five",
-        imageUrl:
-            "https://cdn.pixabay.com/photo/2012/04/18/20/21/strawberry-37781_960_720.png"),
-    SubGroup(
-        id: "6",
-        value: "Six",
-        imageUrl:
-            "https://cdn.pixabay.com/photo/2012/04/18/20/21/strawberry-37781_960_720.png"),
-    SubGroup(
-        id: "7",
-        value: "Seven",
-        imageUrl:
-            "https://cdn.pixabay.com/photo/2012/04/18/20/21/strawberry-37781_960_720.png"),
-    SubGroup(
-        id: "8",
-        value: "Eight",
-        imageUrl:
-            "https://cdn.pixabay.com/photo/2012/04/18/20/21/strawberry-37781_960_720.png"),
-    SubGroup(
-        id: "9",
-        value: "Nine",
-        imageUrl:
-            "https://cdn.pixabay.com/photo/2012/04/18/20/21/strawberry-37781_960_720.png"),
-    SubGroup(
-        id: "10",
-        value: "Ten",
-        imageUrl:
-            "https://cdn.pixabay.com/photo/2012/04/18/20/21/strawberry-37781_960_720.png"),
-  ];
+  @override
+  _SubGroupTopState createState() => _SubGroupTopState();
+}
+
+class _SubGroupTopState extends State<SubGroupTop> {
+  SubGroupService get service => GetIt.I<SubGroupService>();
+
+  APIResponse<List<SubGroup>> _apiResponse;
+
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    _fetchSubGroups();
+    super.initState();
+  }
+
+  _fetchSubGroups() async {
+    setState(() {
+      _isLoading = true;
+    });
+    _apiResponse = await service.getSubGroupList();
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 75,
-      width: double.infinity,
-      margin: EdgeInsets.all(14.0),
-      color: Colors.yellow,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: _subGroups.length,
-        itemBuilder: (context, index) {
-          return Row(
-            children: <Widget>[
-              Container(
-                height: 70,
-                width: 70,
-                child: Card(
-                  child: Image.network(_subGroups[index].imageUrl),
+    return Builder(builder: (context) {
+      if (_isLoading) {
+        return Center(child: CircularProgressIndicator());
+      }
+      if (_apiResponse.error) {
+        return Center(child: Text(_apiResponse.errorMessage));
+      }
+      return Container(
+        height: 90,
+        width: double.infinity,
+        margin: EdgeInsets.all(14.0),
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: _apiResponse.data.length,
+          itemBuilder: (context, index) {
+            return Column(
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.only(right: 8),
+                  height: 70,
+                  width: 70,
+                  child: Column(
+                    children: <Widget>[
+                      Expanded(
+                       child: Card(
+                          child: Image.network(_apiResponse.data[index].imageUrl),
+                        ),
+                      ),
+                      FittedBox(child: Text(_apiResponse.data[index].value)),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          );
-        },
-      ),
-    );
+                
+              ],
+            );
+          },
+        ),
+      );
+    });
   }
 }
