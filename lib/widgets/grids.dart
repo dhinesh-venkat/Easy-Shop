@@ -61,6 +61,7 @@ class _GridsState extends State<Grids> {
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (_) => SubGroupScreen(
+                                groupID: _apiResponse.data[item].id,
                                 groupTitle: _apiResponse.data[item].value,
                               )));
                     },

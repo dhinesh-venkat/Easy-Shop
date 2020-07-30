@@ -8,6 +8,9 @@ import '../models/api_response.dart';
 class SubGroupTop extends StatefulWidget {
   //const SubGroupTop({Key key}) : super(key: key);
 
+  final String groupID;
+  SubGroupTop(this.groupID);
+
   @override
   _SubGroupTopState createState() => _SubGroupTopState();
 }
@@ -21,15 +24,15 @@ class _SubGroupTopState extends State<SubGroupTop> {
 
   @override
   void initState() {
-    _fetchSubGroups();
+    _fetchSubGroups(widget.groupID);
     super.initState();
   }
 
-  _fetchSubGroups() async {
+  _fetchSubGroups(String groupID) async {
     setState(() {
       _isLoading = true;
     });
-    _apiResponse = await service.getSubGroupList();
+    _apiResponse = await service.getSubGroupList(groupID);
 
     setState(() {
       _isLoading = false;
@@ -62,15 +65,15 @@ class _SubGroupTopState extends State<SubGroupTop> {
                   child: Column(
                     children: <Widget>[
                       Expanded(
-                       child: Card(
-                          child: Image.network(_apiResponse.data[index].imageUrl),
+                        child: Card(
+                          child:
+                              Image.network(_apiResponse.data[index].imageUrl),
                         ),
                       ),
                       FittedBox(child: Text(_apiResponse.data[index].value)),
                     ],
                   ),
                 ),
-                
               ],
             );
           },

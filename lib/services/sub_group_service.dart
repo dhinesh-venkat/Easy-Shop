@@ -7,8 +7,8 @@ import '../models/sub_group.dart';
 class SubGroupService {
   String url = MyApp.BASE_URL;
 
-  Future<APIResponse<List<SubGroup>>> getSubGroupList() {
-    return http.get(url + '/api/subgroup?&groupid=12').then((data) {
+  Future<APIResponse<List<SubGroup>>> getSubGroupList(String groupID) {
+    return http.get(url + '/api/subgroup?&groupid=' + groupID).then((data) {
       if (data.statusCode == 200) {
         final jsonData = json.decode(data.body);
         final subGroups = <SubGroup>[];

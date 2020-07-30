@@ -5,7 +5,8 @@ class SubGroupScreen extends StatelessWidget {
   //const SubGroup({Key key}) : super(key: key);
 
   final String groupTitle;
-  SubGroupScreen({this.groupTitle});
+  final String groupID;
+  SubGroupScreen({this.groupID,this.groupTitle});
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +17,9 @@ class SubGroupScreen extends StatelessWidget {
       ),
       body: Column(
         children: <Widget>[
-          Flexible(child: SubGroupTop()),
+          Flexible(child: SubGroupTop(groupID)),
         ],
       ),
     );
   }
 }
-
