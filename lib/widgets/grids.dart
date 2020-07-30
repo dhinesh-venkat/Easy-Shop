@@ -60,7 +60,7 @@ class _GridsState extends State<Grids> {
                   child: GestureDetector(
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (_) => SubGroup(
+                          builder: (_) => SubGroupScreen(
                                 groupTitle: _apiResponse.data[item].value,
                               )));
                     },
