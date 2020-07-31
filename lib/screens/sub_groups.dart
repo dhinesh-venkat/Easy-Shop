@@ -1,5 +1,6 @@
 import 'package:easy_shop/widgets/subgroup_top.dart';
 import 'package:flutter/material.dart';
+import '../widgets/products_grid.dart';
 
 class SubGroupScreen extends StatelessWidget {
   //const SubGroup({Key key}) : super(key: key);
@@ -18,6 +19,7 @@ class SubGroupScreen extends StatelessWidget {
       body: Column(
         children: <Widget>[
           Flexible(child: SubGroupTop(groupID)),
+          ProductsGrid(),
         ],
       ),
     );

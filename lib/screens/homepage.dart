@@ -12,7 +12,7 @@ class HomePage extends StatelessWidget {
         title: Text("Easy Shop"),
       ),
       body: Container(
-        margin: EdgeInsets.all(14),
+        margin: EdgeInsets.only(right: 8,left: 8),
         child: Column(
           children: <Widget>[
             SizedBox(

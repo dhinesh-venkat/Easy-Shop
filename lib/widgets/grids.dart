@@ -49,13 +49,13 @@ class _GridsState extends State<Grids> {
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               childAspectRatio: 3 / 2,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
+              crossAxisSpacing: 2.5,
+              mainAxisSpacing: 2.5,
             ),
             itemCount: _apiResponse.data.length,
             itemBuilder: (BuildContext _, int item) {
               return ClipRRect(
-                borderRadius: BorderRadius.circular(13.0),
+                borderRadius: BorderRadius.circular(5.0),
                 child: GridTile(
                   child: GestureDetector(
                     onTap: () {

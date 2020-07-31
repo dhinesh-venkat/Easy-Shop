@@ -49,9 +49,9 @@ class _SubGroupTopState extends State<SubGroupTop> {
         return Center(child: Text(_apiResponse.errorMessage));
       }
       return Container(
-        height: 90,
+        height: MediaQuery.of(context).size.height * 0.1,
         width: double.infinity,
-        margin: EdgeInsets.all(14.0),
+        margin: EdgeInsets.symmetric(vertical:5.0),
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: _apiResponse.data.length,
