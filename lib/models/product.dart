@@ -2,11 +2,11 @@ class Product {
   String itemId;
   String itemName;
   String code;
-  double mrp;
-  double costRate;
-  double sellingRate;
+  String mrp;
+  String costRate;
+  String sellingRate;
   String uomId;
-  double packtingQty;
+  String packingQty;
   String imageName;
   String subGroupId;
   String subGroup;
@@ -26,7 +26,7 @@ class Product {
     this.costRate,
     this.sellingRate,
     this.uomId,
-    this.packtingQty,
+    this.packingQty,
     this.imageName,
     this.subGroupId,
     this.subGroup,
@@ -48,9 +48,9 @@ class Product {
       costRate: index['CostRate'],
       sellingRate: index['SellingRate'],
       uomId: index['UOMId'],
-      packtingQty: index['UOM'],
-      imageName: index['PacktingQty'],
-      subGroupId: index['ImageName'],
+      packingQty: index['PacktingQty'],
+      imageName: index['ImageName'],
+      subGroupId: index['SubGroupId'],
       subGroup: index['SubGroup'],
       groupId: index['GroupId'],
       groupName: index['GroupName'],
@@ -62,4 +62,3 @@ class Product {
     );
   }
 }
-

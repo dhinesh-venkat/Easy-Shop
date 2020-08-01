@@ -3,10 +3,12 @@ import 'package:get_it/get_it.dart';
 import './screens/homepage.dart';
 import './services/group_service.dart';
 import './services/sub_group_service.dart';
+import './services/product_service.dart';
 
 void setupLocator() {
   GetIt.I.registerLazySingleton(() => GroupService());
   GetIt.I.registerLazySingleton(() => SubGroupService());
+  GetIt.I.registerLazySingleton(() => ProductService());
 }
 
 void main() {

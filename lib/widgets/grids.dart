@@ -47,10 +47,10 @@ class _GridsState extends State<Grids> {
             }
         return GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
+              crossAxisCount: 3,
               childAspectRatio: 3 / 2,
-              crossAxisSpacing: 2.5,
-              mainAxisSpacing: 2.5,
+              crossAxisSpacing: 8.5,
+              mainAxisSpacing: 8.5,
             ),
             itemCount: _apiResponse.data.length,
             itemBuilder: (BuildContext _, int item) {
@@ -71,9 +71,7 @@ class _GridsState extends State<Grids> {
                     ),
                   ),
                   footer: GridTileBar(
-                    backgroundColor:
-                        Theme.of(context).accentColor.withOpacity(0.25),
-                    title: Text(_apiResponse.data[item].value),
+                    title: Text(_apiResponse.data[item].value,textAlign: TextAlign.center,),
                   ),
                 ),
               );

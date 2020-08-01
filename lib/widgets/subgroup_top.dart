@@ -51,30 +51,35 @@ class _SubGroupTopState extends State<SubGroupTop> {
       return Container(
         height: MediaQuery.of(context).size.height * 0.1,
         width: double.infinity,
-        margin: EdgeInsets.symmetric(vertical:5.0),
+        margin: EdgeInsets.symmetric(vertical: 5.0),
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: _apiResponse.data.length,
           itemBuilder: (context, index) {
-            return Column(
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(right: 8),
-                  height: 70,
-                  width: 70,
-                  child: Column(
-                    children: <Widget>[
-                      Expanded(
-                        child: Card(
-                          child:
-                              Image.network(_apiResponse.data[index].imageUrl),
+            return GestureDetector(
+              onTap: () {
+                print(_apiResponse.data[index].value);
+              },
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(right: 8),
+                    height: 70,
+                    width: 70,
+                    child: Column(
+                      children: <Widget>[
+                        Expanded(
+                          child: Card(
+                            child: Image.network(
+                                _apiResponse.data[index].imageUrl),
+                          ),
                         ),
-                      ),
-                      FittedBox(child: Text(_apiResponse.data[index].value)),
-                    ],
+                        Text(_apiResponse.data[index].value,style: TextStyle(fontSize: 8),textAlign: TextAlign.center,),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             );
           },
         ),

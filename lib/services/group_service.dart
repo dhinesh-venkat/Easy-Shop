@@ -8,7 +8,7 @@ class GroupService {
   String url = MyApp.BASE_URL;
 
   Future<APIResponse<List<Group>>> getGroupList() {
-    return http.get(url + '/api//group?&pagenumber=0&pagesize=10').then((data) {
+    return http.get(url + '/api/group?&pagenumber=0&pagesize=10').then((data) {
       if (data.statusCode == 200) {
         final jsonData = json.decode(data.body);
         final groups = <Group>[];
