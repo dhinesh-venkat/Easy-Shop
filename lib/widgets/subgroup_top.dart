@@ -43,7 +43,7 @@ class _SubGroupTopState extends State<SubGroupTop> {
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
       if (_isLoading) {
-        return Center(child: CircularProgressIndicator());
+        return Center(child: Text("Please wait..."));
       }
       if (_apiResponse.error) {
         return Center(child: Text(_apiResponse.errorMessage));

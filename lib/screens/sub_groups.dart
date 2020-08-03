@@ -17,10 +17,11 @@ class SubGroupScreen extends StatelessWidget {
         title: Text("Easy Shop"),
         backgroundColor: Theme.of(context).primaryColor,
       ),
-      body: Column(
+      body: ListView(
+        shrinkWrap: true,
       children: <Widget>[
         ChangeGroup(groupTitle),
-        Flexible(child: SubGroupTop(groupID)),
+        SubGroupTop(groupID),
         ProductsGrid(),
       ],
         ),

@@ -43,7 +43,7 @@ class Product {
     return Product(
       itemId: index['ItemId'],
       itemName: index['ItemName'],
-      code: index['Code'],
+      code: index['COde'],
       mrp: index['MRP'],
       costRate: index['CostRate'],
       sellingRate: index['SellingRate'],

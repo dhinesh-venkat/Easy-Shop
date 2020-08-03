@@ -17,7 +17,7 @@ class GroupService {
               id: item['ID'],
               value: item['VALUE'],
               imageUrl:
-                  "https://cdn.pixabay.com/photo/2015/09/02/12/25/basket-918416_960_720.jpg");
+                  "https://cdn.pixabay.com/photo/2013/07/13/12/34/handbag-159884_960_720.png");
           groups.add(group);
         }
         return APIResponse<List<Group>>(data: groups);
