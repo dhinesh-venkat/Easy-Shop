@@ -77,7 +77,7 @@ class _ProductPageState extends State<ProductPage> {
                                     items: null,
                                     onChanged: null)),
                             Text(
-                              "Selling Price  Rs ${widget.productData.sellingRate}",
+                              "Selling Price  Rs ${widget.productData.data[0].sellingRate}",
                               style: h5,
                             ),
                             Container(
@@ -126,7 +126,7 @@ class _ProductPageState extends State<ProductPage> {
                                       )
                                     ],
                                   ),
-                                  Text("MRP : ${widget.productData.mrp}",
+                                  Text("MRP : ${widget.productData.data[0].mRP}",
                                       style: h3),
                                 ],
                               ),

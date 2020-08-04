@@ -53,7 +53,7 @@ class _ChangeGroupState extends State<ChangeGroup> {
       return Container(
         height: 50,
         width: double.infinity,
-        margin: EdgeInsets.symmetric(vertical: 5.0),
+        //margin: EdgeInsets.symmetric(vertical: 5.0),
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: _apiResponse.data.length,

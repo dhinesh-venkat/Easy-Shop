@@ -13,6 +13,7 @@ class SubGroupScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
         title: Text("Easy Shop"),
         backgroundColor: Theme.of(context).primaryColor,

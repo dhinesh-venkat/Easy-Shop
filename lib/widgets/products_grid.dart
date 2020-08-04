@@ -23,7 +23,7 @@ class _ProductsGridState extends State<ProductsGrid> {
   bool _isFavorite = false;
 
   TextStyle itemNameText = const TextStyle(
-      color: Colors.black,
+      color: Colors.cyan,
       fontSize: 14,
       fontWeight: FontWeight.w600,
       fontFamily: 'Poppins');
@@ -149,9 +149,10 @@ class _ProductsGridState extends State<ProductsGrid> {
                               style: itemNameText,
                             ),
                             Text(
-                              "Rs ${_apiResponse.data[item].sellingRate}",
+                              "Rs ${_apiResponse.data[item].data[0].mRP}",
                               style: priceText,
-                            )
+                            ),
+                          
                             //Text(food.name, style: foodNameText),
                             //Text(food.price, style: priceText),
                           ],

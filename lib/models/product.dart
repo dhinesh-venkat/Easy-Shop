@@ -1,64 +1,66 @@
 class Product {
   String itemId;
   String itemName;
-  String code;
-  String mrp;
-  String costRate;
-  String sellingRate;
-  String uomId;
-  String packingQty;
-  String imageName;
-  String subGroupId;
-  String subGroup;
-  String groupId;
+  String hSN;
   String groupName;
-  String hsnId;
-  String hsn;
-  String narration;
-  String createdOn;
-  String updatedOn;
+  String groupId;
+  String subGroupId;
+  String imageName;
+  List<Data> data;
 
-  Product({
-    this.itemId,
-    this.itemName,
-    this.code,
-    this.mrp,
-    this.costRate,
-    this.sellingRate,
-    this.uomId,
-    this.packingQty,
-    this.imageName,
-    this.subGroupId,
-    this.subGroup,
-    this.groupId,
-    this.groupName,
-    this.hsnId,
-    this.hsn,
-    this.narration,
-    this.createdOn,
-    this.updatedOn,
-  });
+  Product(
+      {this.itemId,
+      this.itemName,
+      this.hSN,
+      this.groupName,
+      this.groupId,
+      this.subGroupId,
+      this.imageName,
+      this.data});
 
-  factory Product.fromJson(Map<String, dynamic> index) {
-    return Product(
-      itemId: index['ItemId'],
-      itemName: index['ItemName'],
-      code: index['COde'],
-      mrp: index['MRP'],
-      costRate: index['CostRate'],
-      sellingRate: index['SellingRate'],
-      uomId: index['UOMId'],
-      packingQty: index['PacktingQty'],
-      imageName: index['ImageName'],
-      subGroupId: index['SubGroupId'],
-      subGroup: index['SubGroup'],
-      groupId: index['GroupId'],
-      groupName: index['GroupName'],
-      hsnId: index['HSNId'],
-      hsn: index['HSN'],
-      narration: index['Narration'],
-      createdOn: index['CreatedOn'],
-      updatedOn: index['UpdatedOn'],
-    );
+  Product.fromJson(Map<String, dynamic> json) {
+    itemId = json['ItemId'];
+    itemName = json['ItemName'];
+    hSN = json['HSN'];
+    groupName = json['GroupName'];
+    groupId = json['GroupId'];
+    subGroupId = json['SubGroupId'];
+    imageName = json['ImageName'];
+    if (json['data'] != null) {
+      data = new List<Data>();
+      json['data'].forEach((v) {
+        data.add(new Data.fromJson(v));
+      });
+    }
   }
+}
+
+class Data {
+  String packingQty;
+  String uOM;
+  String uOMId;
+  String sellingRate;
+  String costRate;
+  String mRP;
+  String code;
+
+  Data(
+      {this.packingQty,
+      this.uOM,
+      this.uOMId,
+      this.sellingRate,
+      this.costRate,
+      this.mRP,
+      this.code});
+
+  Data.fromJson(Map<String, dynamic> json) {
+    packingQty = json['PackingQty'];
+    uOM = json['UOM'];
+    uOMId = json['UOMId'];
+    sellingRate = json['SellingRate'];
+    costRate = json['CostRate'];
+    mRP = json['MRP'];
+    code = json['Code'];
+  }
+
 }

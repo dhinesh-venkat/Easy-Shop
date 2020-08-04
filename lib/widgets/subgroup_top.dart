@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import '../models/sub_group.dart';
 import '../models/api_response.dart';
+import 'package:gradient_widgets/gradient_widgets.dart';
 
 class SubGroupTop extends StatefulWidget {
   //const SubGroupTop({Key key}) : super(key: key);
@@ -21,6 +22,7 @@ class _SubGroupTopState extends State<SubGroupTop> {
   APIResponse<List<SubGroup>> _apiResponse;
 
   bool _isLoading = false;
+  String _selectedIndex = "";
 
   @override
   void initState() {
@@ -49,9 +51,9 @@ class _SubGroupTopState extends State<SubGroupTop> {
         return Center(child: Text(_apiResponse.errorMessage));
       }
       return Container(
-        height: MediaQuery.of(context).size.height * 0.1,
+        height: 50,
         width: double.infinity,
-        margin: EdgeInsets.symmetric(vertical: 5.0),
+        //margin: EdgeInsets.symmetric(vertical: 5.0),
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: _apiResponse.data.length,
@@ -59,26 +61,24 @@ class _SubGroupTopState extends State<SubGroupTop> {
             return GestureDetector(
               onTap: () {
                 print(_apiResponse.data[index].value);
+                setState(() {
+                  _selectedIndex = _apiResponse.data[index].id;
+                });
               },
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(right: 8),
-                    height: 70,
-                    width: 70,
-                    child: Column(
-                      children: <Widget>[
-                        Expanded(
-                          child: Card(
-                            child: Image.network(
-                                _apiResponse.data[index].imageUrl),
-                          ),
-                        ),
-                        Text(_apiResponse.data[index].value,style: TextStyle(fontSize: 8),textAlign: TextAlign.center,),
-                      ],
-                    ),
-                  ),
-                ],
+              child: GradientCard(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: _selectedIndex == _apiResponse.data[index].id
+                      ? Text(_apiResponse.data[index].value,
+                          style: TextStyle(
+                              color: Colors.black, fontFamily: "Fryo"))
+                      : Text(_apiResponse.data[index].value,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: "Fryo")),
+                ),
+                gradient: Gradients.coldLinear,
+                elevation: 20,
               ),
             );
           },

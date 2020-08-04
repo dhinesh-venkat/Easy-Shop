@@ -29,8 +29,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "Easy Shop",
       theme: ThemeData(
-        primaryColor: Colors.blueGrey,
-        accentColor: Colors.blue,
+        primaryColor: Color.fromRGBO(66,67, 69, 1),
+        accentColor: Colors.orange,
       ),
       home: HomePage(),
     );

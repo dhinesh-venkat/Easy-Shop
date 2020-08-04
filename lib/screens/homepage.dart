@@ -5,7 +5,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 class HomePage extends StatelessWidget {
   //const HomePage({Key key}) : super(key: key);
 
-  static const Color bgColor = Colors.blueGrey;
 
   static final List<String> imgList = [
     "https://cdn.pixabay.com/photo/2017/11/02/09/04/drink-2910441_960_720.jpg",
@@ -29,7 +28,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blueGrey,
+      backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
         title: Text("Easy Shop",style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),),
