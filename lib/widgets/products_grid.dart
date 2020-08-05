@@ -4,7 +4,6 @@ import 'package:easy_shop/services/product_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import './product_page.dart';
-import 'package:collection/collection.dart';
 
 class ProductsGrid extends StatefulWidget {
   //const ProductsGrid({Key key}) : super(key: key);
@@ -21,6 +20,7 @@ class _ProductsGridState extends State<ProductsGrid> {
   APIResponse<List<Product>> _apiResponse;
   bool _isLoading = false;
   bool _isFavorite = false;
+  String _selectedPackage;
 
   TextStyle itemNameText = const TextStyle(
       color: Colors.cyan,
@@ -29,7 +29,7 @@ class _ProductsGridState extends State<ProductsGrid> {
       fontFamily: 'Poppins');
 
   TextStyle priceText = const TextStyle(
-      color: Colors.black,
+      color: Colors.white,
       fontSize: 16,
       fontWeight: FontWeight.w800,
       fontFamily: 'Poppins');
@@ -47,9 +47,14 @@ class _ProductsGridState extends State<ProductsGrid> {
 
     _apiResponse = await service.getProductList();
 
-
     setState(() {
       _isLoading = false;
+    });
+  }
+
+  void onSelectedPackage(String value) {
+    setState(() {
+      _selectedPackage = value;
     });
   }
 
@@ -58,7 +63,11 @@ class _ProductsGridState extends State<ProductsGrid> {
     return Builder(
       builder: (context) {
         if (_isLoading) {
-          return Center(child: Text("Loading...",style: TextStyle(color: Colors.black),));
+          return Center(
+              child: Text(
+            "Loading...",
+            style: TextStyle(color: Colors.black),
+          ));
         }
         if (_apiResponse.error) {
           return Center(child: Text(_apiResponse.errorMessage));
@@ -68,7 +77,7 @@ class _ProductsGridState extends State<ProductsGrid> {
             shrinkWrap: true,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                mainAxisSpacing: 8,
+                mainAxisSpacing: 45,
                 crossAxisSpacing: 8,
                 childAspectRatio: 0.8),
             itemCount: _apiResponse.data.length,
@@ -113,7 +122,7 @@ class _ProductsGridState extends State<ProductsGrid> {
                         },
                         child: Image.network(
                           _apiResponse.data[item].imageName,
-                          width: 150,
+                          width: 100,
                         ),
                       ),
                     ),
@@ -152,10 +161,19 @@ class _ProductsGridState extends State<ProductsGrid> {
                               "Rs ${_apiResponse.data[item].data[0].mRP}",
                               style: priceText,
                             ),
-                          
-                            //Text(food.name, style: foodNameText),
-                            //Text(food.price, style: priceText),
                           ],
+                        )),
+                    Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: DropdownButton<String>(
+                          items: _apiResponse.data[item].data.map((element) {
+                            return DropdownMenuItem<String>(
+                                value: element.packingQty,
+                                child: Text(element.packingQty));
+                          }).toList(),
+                          onChanged: (value) => onSelectedPackage(value),
+                          value: _selectedPackage,
                         )),
                   ],
                 ),
