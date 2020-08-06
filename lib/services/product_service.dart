@@ -7,8 +7,8 @@ import '../main.dart';
 class ProductService {
   String url = MyApp.BASE_URL;
 
-  Future<APIResponse<List<Product>>> getProductList() {
-    return http.get(url + "/api/item?&pagenumber=1&pagesize=20&groupid=21&subgroupid=100").then((data) {
+  Future<APIResponse<List<Product>>> getProductList(String groupId,String subGroupId) {
+    return http.get(url + "/api/item?&pagenumber=1&pagesize=20&groupid="+ groupId+"&subgroupid=" + subGroupId).then((data) {
       if (data.statusCode == 200) {
         final jsonData = json.decode(data.body);
         final products = <Product>[];

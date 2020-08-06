@@ -1,11 +1,10 @@
 import 'package:easy_shop/models/api_response.dart';
 import 'package:easy_shop/models/group.dart';
 import 'package:easy_shop/services/group_service.dart';
-import 'package:easy_shop/widgets/subgroup_top.dart';
+import 'package:easy_shop/widgets/subgroup_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:gradient_widgets/gradient_widgets.dart';
-import '../widgets/products_grid.dart';
 
 class SubGroupScreen extends StatefulWidget {
   //const SubGroup({Key key}) : super(key: key);
@@ -39,8 +38,8 @@ class _SubGroupScreenState extends State<SubGroupScreen> {
 
     _apiResponse = await service.getGroupList();
     for (int i = 0; i < _apiResponse.data.length; i++) {
-      Tab tab = getTab(_apiResponse.data[i]);
-      _tabs.add(tab);
+      Tab groupTab = getGroupTab(_apiResponse.data[i]);
+      _tabs.add(groupTab);
     }
 
     setState(() {
@@ -48,7 +47,7 @@ class _SubGroupScreenState extends State<SubGroupScreen> {
     });
   }
 
-  Widget getTab(Group group) {
+  Widget getGroupTab(Group group) {
     return Tab(
       child: GradientCard(
         gradient: Gradients.taitanum,
@@ -60,6 +59,12 @@ class _SubGroupScreenState extends State<SubGroupScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget getSubGroupTab(String id) {
+    return SubGroupTab(
+      groupID: id,
     );
   }
 
@@ -82,35 +87,14 @@ class _SubGroupScreenState extends State<SubGroupScreen> {
                 backgroundColor: Theme.of(context).primaryColor,
                 bottom: TabBar(isScrollable: true, tabs: _tabs),
               ),
-              body: TabBarView(              
-                children: <Widget>[
-                  SubGroupTop(groupID: _apiResponse.data[0].id,),
-                  SubGroupTop(groupID: _apiResponse.data[1].id,),
-                  SubGroupTop(groupID: _apiResponse.data[2].id,),
-                  SubGroupTop(groupID: _apiResponse.data[3].id,),
-                  SubGroupTop(groupID: _apiResponse.data[4].id,),
-                  SubGroupTop(groupID: _apiResponse.data[5].id,),
-                  SubGroupTop(groupID: _apiResponse.data[6].id,),
-                  SubGroupTop(groupID: _apiResponse.data[7].id,),
-                  SubGroupTop(groupID: _apiResponse.data[8].id,),
-                  SubGroupTop(groupID: _apiResponse.data[9].id,),
-                  SubGroupTop(groupID: _apiResponse.data[10].id,),
-                  SubGroupTop(groupID: _apiResponse.data[11].id,),
-                  SubGroupTop(groupID: _apiResponse.data[12].id,),
-                  SubGroupTop(groupID: _apiResponse.data[13].id,),
-                  SubGroupTop(groupID: _apiResponse.data[14].id,),
-                  SubGroupTop(groupID: _apiResponse.data[15].id,),
-                  SubGroupTop(groupID: _apiResponse.data[15].id,),
-                ],
-              )
-              // ListView(
-              //   shrinkWrap: true,
-              //   children: <Widget>[
-              //     //SubGroupTop(widget.groupID),
-              //     //ProductsGrid(),
-              //   ],
-              // ),
-              ),
+              body: Container(
+                  height: 50,
+                  child: TabBarView(
+                      children: List<Widget>.generate(
+                          _apiResponse.data.length,
+                          (index) => SubGroupTab(
+                                groupID: _apiResponse.data[index].id,
+                              ))))),
         );
       },
     );

@@ -6,10 +6,11 @@ import 'package:get_it/get_it.dart';
 import './product_page.dart';
 
 class ProductsGrid extends StatefulWidget {
-  //const ProductsGrid({Key key}) : super(key: key);
-  // final String subGroupId;
+  const ProductsGrid({Key key,this.groupId,this.subGroupId}) : super(key: key);
+  
+  final String groupId;
+  final String subGroupId;
 
-  // ProductsGrid(this.subGroupId);
   @override
   _ProductsGridState createState() => _ProductsGridState();
 }
@@ -45,7 +46,7 @@ class _ProductsGridState extends State<ProductsGrid> {
       _isLoading = true;
     });
 
-    _apiResponse = await service.getProductList();
+    _apiResponse = await service.getProductList(widget.groupId,widget.subGroupId);
 
     setState(() {
       _isLoading = false;
