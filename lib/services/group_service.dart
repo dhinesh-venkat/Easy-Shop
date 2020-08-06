@@ -9,6 +9,7 @@ class GroupService {
 
   Future<APIResponse<List<Group>>> getGroupList() {
     return http.get(url + '/api/group?&pagenumber=0&pagesize=10').then((data) {
+      print(data.statusCode);
       if (data.statusCode == 200) {
         final jsonData = json.decode(data.body);
         final groups = <Group>[];
