@@ -52,8 +52,13 @@ class _SubGroupScreenState extends State<SubGroupScreen> {
     return Tab(
       child: GradientCard(
         gradient: Gradients.taitanum,
-        child: Padding(padding: EdgeInsets.all(8.0),
-        child: Text(group.value,style: TextStyle(color: Colors.white),),),
+        child: Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+            group.value,
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
       ),
     );
   }
@@ -71,20 +76,41 @@ class _SubGroupScreenState extends State<SubGroupScreen> {
         return DefaultTabController(
           length: _tabs.length,
           child: Scaffold(
-            backgroundColor: Theme.of(context).primaryColor,
-            appBar: AppBar(
-              title: Text("Easy Shop"),
               backgroundColor: Theme.of(context).primaryColor,
-              bottom: TabBar(isScrollable: true, tabs: _tabs),
-            ),
-            body: ListView(
-              shrinkWrap: true,
-              children: <Widget>[
-                SubGroupTop(widget.groupID),
-                ProductsGrid(),
-              ],
-            ),
-          ),
+              appBar: AppBar(
+                title: Text("Easy Shop"),
+                backgroundColor: Theme.of(context).primaryColor,
+                bottom: TabBar(isScrollable: true, tabs: _tabs),
+              ),
+              body: TabBarView(              
+                children: <Widget>[
+                  SubGroupTop(groupID: _apiResponse.data[0].id,),
+                  SubGroupTop(groupID: _apiResponse.data[1].id,),
+                  SubGroupTop(groupID: _apiResponse.data[2].id,),
+                  SubGroupTop(groupID: _apiResponse.data[3].id,),
+                  SubGroupTop(groupID: _apiResponse.data[4].id,),
+                  SubGroupTop(groupID: _apiResponse.data[5].id,),
+                  SubGroupTop(groupID: _apiResponse.data[6].id,),
+                  SubGroupTop(groupID: _apiResponse.data[7].id,),
+                  SubGroupTop(groupID: _apiResponse.data[8].id,),
+                  SubGroupTop(groupID: _apiResponse.data[9].id,),
+                  SubGroupTop(groupID: _apiResponse.data[10].id,),
+                  SubGroupTop(groupID: _apiResponse.data[11].id,),
+                  SubGroupTop(groupID: _apiResponse.data[12].id,),
+                  SubGroupTop(groupID: _apiResponse.data[13].id,),
+                  SubGroupTop(groupID: _apiResponse.data[14].id,),
+                  SubGroupTop(groupID: _apiResponse.data[15].id,),
+                  SubGroupTop(groupID: _apiResponse.data[15].id,),
+                ],
+              )
+              // ListView(
+              //   shrinkWrap: true,
+              //   children: <Widget>[
+              //     //SubGroupTop(widget.groupID),
+              //     //ProductsGrid(),
+              //   ],
+              // ),
+              ),
         );
       },
     );
