@@ -41,7 +41,11 @@ class _GridsState extends State<Grids> {
     return Builder(
       builder: (_) {
         if (_isLoading) {
-          return Center(child: Text("Loading...",style: TextStyle(color: Colors.white),));
+          return Center(
+              child: Text(
+            "Loading...",
+            style: TextStyle(color: Colors.white),
+          ));
         }
         if (_apiResponse.error) {
           return Center(child: Text(_apiResponse.errorMessage));
@@ -49,18 +53,19 @@ class _GridsState extends State<Grids> {
         return GridView.builder(
             physics: ScrollPhysics(),
             shrinkWrap: true,
+            padding: EdgeInsets.all(10),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              childAspectRatio: 2 / 2,
-              crossAxisSpacing: 5.0,
-              mainAxisSpacing: 5.0,
+              childAspectRatio: 1,
+              crossAxisSpacing: 1,
+              mainAxisSpacing: 1,
             ),
             itemCount: _apiResponse.data.length,
             itemBuilder: (BuildContext _, int item) {
               return Container(
                 height: 180,
                 width: 180,
-                margin: EdgeInsets.all(5),
+                margin: EdgeInsets.all(1),
                 child: Stack(
                   overflow: Overflow.visible,
                   children: <Widget>[
@@ -89,8 +94,13 @@ class _GridsState extends State<Grids> {
                                     groupTitle: _apiResponse.data[item].value,
                                   )));
                         },
-                        child: Image.network(
-                          _apiResponse.data[item].imageUrl,
+                        // child: Image.network(
+                        //   _apiResponse.data[item].imageUrl,
+                        //   width: 100,
+                        // ),
+                        child: FadeInImage.assetNetwork(
+                          placeholder: "assets/images/no_image.png",
+                          image: _apiResponse.data[item].imageUrl,
                           width: 100,
                         ),
                       ),
