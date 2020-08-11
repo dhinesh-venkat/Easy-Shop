@@ -3,11 +3,11 @@ import 'package:easy_shop/models/product.dart';
 import 'package:easy_shop/services/product_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import './product_page.dart';
 
 class ProductsGrid extends StatefulWidget {
-  const ProductsGrid({Key key,this.groupId,this.subGroupId}) : super(key: key);
-  
+  const ProductsGrid({Key key, this.groupId, this.subGroupId})
+      : super(key: key);
+
   final String groupId;
   final String subGroupId;
 
@@ -46,7 +46,8 @@ class _ProductsGridState extends State<ProductsGrid> {
       _isLoading = true;
     });
 
-    _apiResponse = await service.getProductList(widget.groupId,widget.subGroupId);
+    _apiResponse =
+        await service.getProductList(widget.groupId, widget.subGroupId);
 
     setState(() {
       _isLoading = false;
@@ -109,22 +110,17 @@ class _ProductsGridState extends State<ProductsGrid> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5)),
                         onPressed: () {
-                          //print(_apiResponse.data[item].createdOn);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return new ProductPage(
-                                  productData: _apiResponse.data[item],
-                                );
-                              },
-                            ),
-                          );
+                          print(_apiResponse.data[item].itemName);
                         },
                         child: Image.network(
                           _apiResponse.data[item].imageName,
                           width: 100,
                         ),
+                        // child: FadeInImage.assetNetwork(
+                        //   placeholder: "assets/images/no_image.png",
+                        //   image: _apiResponse.data[item].imageName,
+                        //   width: 100,
+                        // ),
                       ),
                     ),
                     Positioned(

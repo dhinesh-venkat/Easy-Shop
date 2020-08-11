@@ -62,5 +62,4 @@ class Data {
     mRP = json['MRP'];
     code = json['Code'];
   }
-
 }

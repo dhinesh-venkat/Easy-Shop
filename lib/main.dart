@@ -1,3 +1,4 @@
+import 'package:easy_shop/screens/cart_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import './screens/homepage.dart';
@@ -29,10 +30,13 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "Easy Shop",
       theme: ThemeData(
-        primaryColor: Color.fromRGBO(66,67, 69, 1),
+        primaryColor: Color.fromRGBO(66, 67, 69, 1),
         accentColor: Colors.orange,
       ),
       home: HomePage(),
+      routes: {
+        CartScreen.routeName: (_) => CartScreen(),
+      },
     );
   }
 }
