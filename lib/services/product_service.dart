@@ -17,6 +17,7 @@ class ProductService {
         }
         return APIResponse<List<Product>>(data: products);
       }
+      
       return APIResponse<List<Product>>(
           error: true, errorMessage: "An error occured");
     }).catchError((_) => APIResponse<List<Product>>(

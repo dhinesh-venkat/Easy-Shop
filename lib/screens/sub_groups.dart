@@ -1,6 +1,7 @@
 import 'package:easy_shop/models/api_response.dart';
 import 'package:easy_shop/models/group.dart';
 import 'package:easy_shop/services/group_service.dart';
+import 'package:easy_shop/widgets/products_grid.dart';
 import 'package:easy_shop/widgets/subgroup_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -24,6 +25,7 @@ class _SubGroupScreenState extends State<SubGroupScreen> {
   bool _isLoading = false;
 
   List<Tab> _tabs = [];
+  String currentGroupId = '';
 
   @override
   void initState() {
@@ -85,10 +87,16 @@ class _SubGroupScreenState extends State<SubGroupScreen> {
               appBar: AppBar(
                 title: Text("Easy Shop"),
                 backgroundColor: Theme.of(context).primaryColor,
-                bottom: TabBar(isScrollable: true, tabs: _tabs),
+                bottom: TabBar(
+                    onTap: (value) {
+                      setState(() {
+                      currentGroupId = _apiResponse.data[value].id;               
+                      });
+                    },
+                    isScrollable: true,
+                    tabs: _tabs),
               ),
-              body: Container(
-                  height: 50,
+              body: Container(                
                   child: TabBarView(
                       children: List<Widget>.generate(
                           _apiResponse.data.length,
