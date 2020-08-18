@@ -1,7 +1,6 @@
 import 'package:easy_shop/models/api_response.dart';
 import 'package:easy_shop/models/group.dart';
 import 'package:easy_shop/services/group_service.dart';
-import 'package:easy_shop/widgets/products_grid.dart';
 import 'package:easy_shop/widgets/subgroup_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -12,6 +11,7 @@ class SubGroupScreen extends StatefulWidget {
 
   final String groupTitle;
   final String groupID;
+
   SubGroupScreen({this.groupID, this.groupTitle});
 
   @override
@@ -25,6 +25,7 @@ class _SubGroupScreenState extends State<SubGroupScreen> {
   bool _isLoading = false;
 
   List<Tab> _tabs = [];
+  int _initialIndex = 0;
   String currentGroupId = '';
 
   @override
@@ -40,6 +41,9 @@ class _SubGroupScreenState extends State<SubGroupScreen> {
 
     _apiResponse = await service.getGroupList();
     for (int i = 0; i < _apiResponse.data.length; i++) {
+      if (_apiResponse.data[i].id == widget.groupID) {
+        _initialIndex = i;
+      }
       Tab groupTab = getGroupTab(_apiResponse.data[i]);
       _tabs.add(groupTab);
     }
@@ -81,6 +85,7 @@ class _SubGroupScreenState extends State<SubGroupScreen> {
           return Center(child: Text(_apiResponse.errorMessage));
         }
         return DefaultTabController(
+          initialIndex: _initialIndex,
           length: _tabs.length,
           child: Scaffold(
               backgroundColor: Theme.of(context).primaryColor,
@@ -90,13 +95,13 @@ class _SubGroupScreenState extends State<SubGroupScreen> {
                 bottom: TabBar(
                     onTap: (value) {
                       setState(() {
-                      currentGroupId = _apiResponse.data[value].id;               
+                        currentGroupId = _apiResponse.data[value].id;
                       });
                     },
                     isScrollable: true,
                     tabs: _tabs),
               ),
-              body: Container(                
+              body: Container(
                   child: TabBarView(
                       children: List<Widget>.generate(
                           _apiResponse.data.length,
