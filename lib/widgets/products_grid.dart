@@ -24,8 +24,8 @@ class _ProductsGridState extends State<ProductsGrid> {
   bool _isLoading = false;
   bool _isFavorite = false;
   List<String> _selectedPackage = [];
-  int _selectedQuantity = 1;
-  final List _quantity = List<int>.generate(100, (index) => index + 1);
+  List<int> _selectedQuantity = [];
+  final List _quantity = List<int>.generate(100, (index) => index);
 
   TextStyle itemNameText = const TextStyle(
       color: Colors.cyan,
@@ -54,6 +54,7 @@ class _ProductsGridState extends State<ProductsGrid> {
         await service.getProductList(widget.groupId, widget.subGroupId);
     for (int i = 0; i < _apiResponse.data.length; i++) {
       _selectedPackage.add(_apiResponse.data[i].data[0].packingQty);
+      _selectedQuantity.add(0);
     }
 
     setState(() {
@@ -67,9 +68,9 @@ class _ProductsGridState extends State<ProductsGrid> {
     });
   }
 
-  void onSelectedQuantity(int value) {
+  void onSelectedQuantity(int value, int index) {
     setState(() {
-      _selectedQuantity = value;
+      _selectedQuantity[index] = value;
     });
   }
 
@@ -194,24 +195,8 @@ class _ProductsGridState extends State<ProductsGrid> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  DropdownButtonHideUnderline(
-                                      child: DropdownButton(
-                                    hint: Text(
-                                      "Quantity",
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                    value: _selectedQuantity,
-                                    onChanged: (value) =>
-                                        onSelectedQuantity(value),
-                                    items: _quantity.map((e) {
-                                      return DropdownMenuItem(
-                                          value: e,
-                                          child: Text(e.toString(),
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                              )));
-                                    }).toList(),
-                                  )),
+                                  getDropDownForQuantity(item),
+                                  SizedBox(width: 45,),
                                   GradientButton(
                                       child: Text("Add to Cart"),
                                       callback: () {
@@ -236,11 +221,21 @@ class _ProductsGridState extends State<ProductsGrid> {
       value: _selectedPackage[index],
       items: list.map((item) {
         return DropdownMenuItem<String>(
-          child: Text(item),
+          child: Text(item,style: TextStyle(color: Colors.white),),
           value: item,
         );
       }).toList(),
       onChanged: (value) => onSelectedPackage(value, index),
     ));
+  }
+
+  Widget getDropDownForQuantity(int index) {
+    return DropdownButtonHideUnderline(
+        child: DropdownButton(
+          value: _selectedQuantity[index],
+            items: _quantity.map((item) {
+              return DropdownMenuItem(child: Text(item.toString(),style: TextStyle(color: Colors.white),),value: item,);
+            }).toList(),
+            onChanged: (value) => onSelectedQuantity(value, index),));
   }
 }
