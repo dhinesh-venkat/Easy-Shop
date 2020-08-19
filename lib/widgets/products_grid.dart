@@ -6,12 +6,13 @@ import 'package:get_it/get_it.dart';
 import 'package:gradient_widgets/gradient_widgets.dart';
 
 class ProductsGrid extends StatefulWidget {
-  const ProductsGrid({Key key, this.groupId, this.subGroupId})
-      : super(key: key);
+  // const ProductsGrid({Key key, this.groupId, this.subGroupId})
+  //     : super(key: key);
 
   final String groupId;
   final String subGroupId;
 
+  ProductsGrid({this.groupId, this.subGroupId});
   @override
   _ProductsGridState createState() => _ProductsGridState();
 }
@@ -22,7 +23,7 @@ class _ProductsGridState extends State<ProductsGrid> {
   APIResponse<List<Product>> _apiResponse;
   bool _isLoading = false;
   bool _isFavorite = false;
-  String _selectedPackage;
+  List<String> _selectedPackage = [];
   int _selectedQuantity = 1;
   final List _quantity = List<int>.generate(100, (index) => index + 1);
 
@@ -51,15 +52,18 @@ class _ProductsGridState extends State<ProductsGrid> {
 
     _apiResponse =
         await service.getProductList(widget.groupId, widget.subGroupId);
+    for (int i = 0; i < _apiResponse.data.length; i++) {
+      _selectedPackage.add(_apiResponse.data[i].data[0].packingQty);
+    }
 
     setState(() {
       _isLoading = false;
     });
   }
 
-  void onSelectedPackage(String value) {
+  void onSelectedPackage(String value, int index) {
     setState(() {
-      _selectedPackage = value;
+      _selectedPackage[index] = value;
     });
   }
 
@@ -176,34 +180,36 @@ class _ProductsGridState extends State<ProductsGrid> {
                                     "Rs ${_apiResponse.data[item].data[0].mRP}",
                                     style: priceText,
                                   ),
-                                  SizedBox(width: 45,),
-                                  DropdownButtonHideUnderline(
-                                    child: DropdownButton<String>(
-                                      items: _apiResponse.data[item].data
-                                          .map((element) {
-                                        return DropdownMenuItem<String>(
-                                            value: element.packingQty,
-                                            child: Text(element.packingQty));
-                                      }).toList(),
-                                      onChanged: (value) =>
-                                          onSelectedPackage(value),
-                                      value: _selectedPackage,
-                                      hint: Text("Package",style: TextStyle(color: Colors.white),),
-                                    ),
-                                  ),    
+                                  SizedBox(
+                                    width: 45,
+                                  ),
+                                  getDropDownForPacking(
+                                      _apiResponse.data[item].data
+                                          .map((e) => e.packingQty)
+                                          .toList(),
+                                      item)
                                 ],
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   DropdownButtonHideUnderline(
                                       child: DropdownButton(
-                                        hint: Text("Quantity",style: TextStyle(color: Colors.white),),
-                                        value: _selectedQuantity,
-                                        onChanged: (value) => onSelectedQuantity(value),
+                                    hint: Text(
+                                      "Quantity",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    value: _selectedQuantity,
+                                    onChanged: (value) =>
+                                        onSelectedQuantity(value),
                                     items: _quantity.map((e) {
                                       return DropdownMenuItem(
-                                          value: e, child: Text("${e}",style: TextStyle(color:Colors.white,)));
+                                          value: e,
+                                          child: Text(e.toString(),
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                              )));
                                     }).toList(),
                                   )),
                                   GradientButton(
@@ -222,5 +228,19 @@ class _ProductsGridState extends State<ProductsGrid> {
         );
       },
     );
+  }
+
+  Widget getDropDownForPacking(List<String> list, int index) {
+    return DropdownButtonHideUnderline(
+        child: DropdownButton(
+      value: _selectedPackage[index],
+      items: list.map((item) {
+        return DropdownMenuItem<String>(
+          child: Text(item),
+          value: item,
+        );
+      }).toList(),
+      onChanged: (value) => onSelectedPackage(value, index),
+    ));
   }
 }
