@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:gradient_widgets/gradient_widgets.dart';
 
+import 'cart_screen.dart';
+
 class SubGroupScreen extends StatefulWidget {
   //const SubGroup({Key key}) : super(key: key);
 
@@ -87,6 +89,14 @@ class _SubGroupScreenState extends State<SubGroupScreen> {
           child: Scaffold(
               backgroundColor: Theme.of(context).primaryColor,
               appBar: AppBar(
+                actions: [
+          IconButton(
+              icon: Icon(Icons.shopping_cart),
+              color: Colors.blue,
+              onPressed: () {
+                Navigator.of(context).pushNamed(CartScreen.routeName);
+              })
+        ],
                 title: Text("Easy Shop"),
                 backgroundColor: Theme.of(context).primaryColor,
                 bottom: TabBar(
