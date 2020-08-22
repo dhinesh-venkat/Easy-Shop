@@ -22,9 +22,9 @@ class _ProductsGridState extends State<ProductsGrid> {
 
   APIResponse<List<Product>> _apiResponse;
   bool _isLoading = false;
-  bool _isFavorite = false;
   List<String> _selectedPackage = [];
   List<int> _selectedQuantity = [];
+  List<bool> _favorites = [];
   final List _quantity = List<int>.generate(100, (index) => index);
 
   TextStyle itemNameText = const TextStyle(
@@ -55,6 +55,7 @@ class _ProductsGridState extends State<ProductsGrid> {
     for (int i = 0; i < _apiResponse.data.length; i++) {
       _selectedPackage.add(_apiResponse.data[i].data[0].packingQty);
       _selectedQuantity.add(0);
+      _favorites.add(false);
     }
     setState(() {
       _isLoading = false;
@@ -149,10 +150,10 @@ class _ProductsGridState extends State<ProductsGrid> {
                               shape: CircleBorder(),
                               onPressed: () {
                                 setState(() {
-                                  _isFavorite = !_isFavorite;
+                                  _favorites[item] = !_favorites[item];
                                 });
                               },
-                              child: _isFavorite
+                              child: _favorites[item]
                                   ? Icon(
                                       Icons.favorite,
                                       color: Colors.blue,
