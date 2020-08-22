@@ -90,25 +90,24 @@ class _SubGroupScreenState extends State<SubGroupScreen> {
               backgroundColor: Theme.of(context).primaryColor,
               appBar: AppBar(
                 actions: [
-          IconButton(
-              icon: Icon(Icons.shopping_cart),
-              color: Colors.blue,
-              onPressed: () {
-                Navigator.of(context).pushNamed(CartScreen.routeName);
-              })
-        ],
+                  IconButton(
+                      icon: Icon(Icons.shopping_cart),
+                      color: Colors.blue,
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(CartScreen.routeName);
+                      })
+                ],
                 title: Text("Easy Shop"),
                 backgroundColor: Theme.of(context).primaryColor,
                 bottom: TabBar(
-                  labelPadding: EdgeInsets.symmetric(horizontal: 5),
-                  indicatorSize: TabBarIndicatorSize.label,
-                  indicatorWeight: 0.01,
-                  indicator: ShapeDecoration(
-                    gradient: Gradients.taitanum,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    )
-                  ),
+                    labelPadding: EdgeInsets.symmetric(horizontal: 5),
+                    indicatorSize: TabBarIndicatorSize.label,
+                    indicatorWeight: 0.01,
+                    indicator: ShapeDecoration(
+                        gradient: Gradients.taitanum,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        )),
                     onTap: (value) {
                       setState(() {
                         currentGroupId = _apiResponse.data[value].id;
