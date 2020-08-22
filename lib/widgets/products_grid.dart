@@ -56,7 +56,6 @@ class _ProductsGridState extends State<ProductsGrid> {
       _selectedPackage.add(_apiResponse.data[i].data[0].packingQty);
       _selectedQuantity.add(0);
     }
-
     setState(() {
       _isLoading = false;
     });
@@ -196,7 +195,9 @@ class _ProductsGridState extends State<ProductsGrid> {
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   getDropDownForQuantity(item),
-                                  SizedBox(width: 45,),
+                                  SizedBox(
+                                    width: 45,
+                                  ),
                                   GradientButton(
                                       child: Text("Add to Cart"),
                                       callback: () {
@@ -221,7 +222,10 @@ class _ProductsGridState extends State<ProductsGrid> {
       value: _selectedPackage[index],
       items: list.map((item) {
         return DropdownMenuItem<String>(
-          child: Text(item,style: TextStyle(color: Colors.white),),
+          child: Text(
+            item,
+            style: TextStyle(color: Colors.white),
+          ),
           value: item,
         );
       }).toList(),
@@ -232,10 +236,17 @@ class _ProductsGridState extends State<ProductsGrid> {
   Widget getDropDownForQuantity(int index) {
     return DropdownButtonHideUnderline(
         child: DropdownButton(
-          value: _selectedQuantity[index],
-            items: _quantity.map((item) {
-              return DropdownMenuItem(child: Text(item.toString(),style: TextStyle(color: Colors.white),),value: item,);
-            }).toList(),
-            onChanged: (value) => onSelectedQuantity(value, index),));
+      value: _selectedQuantity[index],
+      items: _quantity.map((item) {
+        return DropdownMenuItem(
+          child: Text(
+            item.toString(),
+            style: TextStyle(color: Colors.white),
+          ),
+          value: item,
+        );
+      }).toList(),
+      onChanged: (value) => onSelectedQuantity(value, index),
+    ));
   }
 }

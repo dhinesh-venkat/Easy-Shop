@@ -55,14 +55,11 @@ class _SubGroupScreenState extends State<SubGroupScreen> {
 
   Widget getGroupTab(Group group) {
     return Tab(
-      child: GradientCard(
-        gradient: Gradients.taitanum,
-        child: Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Text(
-            group.value,
-            style: TextStyle(color: Colors.white),
-          ),
+      child: Padding(
+        padding: EdgeInsets.all(8.0),
+        child: Text(
+          group.value,
+          style: TextStyle(color: Colors.white),
         ),
       ),
     );
@@ -93,6 +90,15 @@ class _SubGroupScreenState extends State<SubGroupScreen> {
                 title: Text("Easy Shop"),
                 backgroundColor: Theme.of(context).primaryColor,
                 bottom: TabBar(
+                  labelPadding: EdgeInsets.symmetric(horizontal: 5),
+                  indicatorSize: TabBarIndicatorSize.label,
+                  indicatorWeight: 0.01,
+                  indicator: ShapeDecoration(
+                    gradient: Gradients.taitanum,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    )
+                  ),
                     onTap: (value) {
                       setState(() {
                         currentGroupId = _apiResponse.data[value].id;

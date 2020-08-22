@@ -52,12 +52,9 @@ class _SubGroupTopState extends State<SubGroupTab>
 
   Widget getSubGroupTabs(String value) {
     return Tab(
-      child: GradientCard(
-        gradient: Gradients.coldLinear,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(value),
-        ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(value),
       ),
     );
   }
@@ -81,6 +78,13 @@ class _SubGroupTopState extends State<SubGroupTab>
                 child: AppBar(
                 automaticallyImplyLeading: false,
                 bottom: TabBar(
+                  indicatorSize: TabBarIndicatorSize.label,
+                  labelPadding: EdgeInsets.symmetric(horizontal: 2.5),
+                    indicator: ShapeDecoration(
+                      gradient: Gradients.coldLinear,
+                      shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)
+                    )),
                     controller: _tabController,
                     isScrollable: true,
                     indicatorColor: Colors.white,
