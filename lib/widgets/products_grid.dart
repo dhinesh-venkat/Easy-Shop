@@ -3,7 +3,7 @@ import 'package:easy_shop/models/product.dart';
 import 'package:easy_shop/services/product_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:gradient_widgets/gradient_widgets.dart';
+import 'package:number_inc_dec/number_inc_dec.dart';
 
 class ProductsGrid extends StatefulWidget {
   // const ProductsGrid({Key key, this.groupId, this.subGroupId})
@@ -25,6 +25,7 @@ class _ProductsGridState extends State<ProductsGrid> {
   List<String> _selectedPackage = [];
   List<int> _selectedQuantity = [];
   List<bool> _favorites = [];
+  List<double> _prices = [];
   final List _quantity = List<int>.generate(100, (index) => index);
 
   TextStyle itemNameText = const TextStyle(
@@ -56,6 +57,7 @@ class _ProductsGridState extends State<ProductsGrid> {
       _selectedPackage.add(_apiResponse.data[i].data[0].packingQty);
       _selectedQuantity.add(0);
       _favorites.add(false);
+      _prices.add(double.parse(_apiResponse.data[i].data[0].mRP));
     }
     setState(() {
       _isLoading = false;
@@ -143,26 +145,6 @@ class _ProductsGridState extends State<ProductsGrid> {
                         ),
                       ),
                       Positioned(
-                          top: 0,
-                          right: -15,
-                          child: FlatButton(
-                              padding: EdgeInsets.all(5),
-                              shape: CircleBorder(),
-                              onPressed: () {
-                                setState(() {
-                                  _favorites[item] = !_favorites[item];
-                                });
-                              },
-                              child: _favorites[item]
-                                  ? Icon(
-                                      Icons.favorite,
-                                      color: Colors.blue,
-                                    )
-                                  : Icon(
-                                      Icons.favorite_border,
-                                      color: Colors.blue,
-                                    ))),
-                      Positioned(
                           bottom: 10,
                           left: 0,
                           child: Column(
@@ -178,32 +160,60 @@ class _ProductsGridState extends State<ProductsGrid> {
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Text(
-                                    "Rs ${_apiResponse.data[item].data[0].mRP}",
+                                    _apiResponse.data[item].data[0].mRP,
                                     style: priceText,
                                   ),
                                   SizedBox(
                                     width: 45,
                                   ),
+                                  Text(
+                                    _apiResponse.data[item].data[0].sellingRate,
+                                    style: priceText,
+                                  )
+                                ],
+                              ),
+                              Row(
+                                children: <Widget>[
                                   getDropDownForPacking(
                                       _apiResponse.data[item].data
                                           .map((e) => e.packingQty)
                                           .toList(),
-                                      item)
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  getDropDownForQuantity(item),
+                                      item),
                                   SizedBox(
                                     width: 45,
                                   ),
-                                  GradientButton(
-                                      child: Text("Add to Cart"),
-                                      callback: () {
-                                        print("Pressed");
+                                  getDropDownForQuantity(item),
+                                ],
+                              ),
+                              Row(
+                                children: <Widget>[
+                                  IconButton(
+                                      icon: _favorites[item]
+                                          ? Icon(
+                                              Icons.favorite,
+                                              color: Colors.red,
+                                            )
+                                          : Icon(
+                                              Icons.favorite_border,
+                                              color: Colors.red,
+                                            ),
+                                      onPressed: () {
+                                        setState(() {
+                                          _favorites[item] = !_favorites[item];
+                                        });
                                       }),
+                                  SizedBox(
+                                    width: 45,
+                                  ),
+                                  IconButton(
+                                      icon: Icon(
+                                        Icons.shopping_cart_rounded,
+                                        color: Colors.blue,
+                                      ),
+                                      onPressed: () {
+                                        print(
+                                            "Added ${_apiResponse.data[item].itemName}");
+                                      })
                                 ],
                               ),
                             ],
@@ -220,13 +230,13 @@ class _ProductsGridState extends State<ProductsGrid> {
   Widget getDropDownForPacking(List<String> list, int index) {
     return DropdownButtonHideUnderline(
         child: DropdownButton(
+      style: TextStyle(color: Colors.white),
+      dropdownColor: Colors.black,
+      elevation: 8,
       value: _selectedPackage[index],
       items: list.map((item) {
         return DropdownMenuItem<String>(
-          child: Text(
-            item,
-            style: TextStyle(color: Colors.white),
-          ),
+          child: Text(item),
           value: item,
         );
       }).toList(),
@@ -237,12 +247,14 @@ class _ProductsGridState extends State<ProductsGrid> {
   Widget getDropDownForQuantity(int index) {
     return DropdownButtonHideUnderline(
         child: DropdownButton(
+      style: TextStyle(color: Colors.white),
+      dropdownColor: Colors.black,
+      elevation: 8,
       value: _selectedQuantity[index],
       items: _quantity.map((item) {
         return DropdownMenuItem(
           child: Text(
             item.toString(),
-            style: TextStyle(color: Colors.white),
           ),
           value: item,
         );
