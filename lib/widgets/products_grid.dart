@@ -3,7 +3,7 @@ import 'package:easy_shop/models/product.dart';
 import 'package:easy_shop/services/product_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:number_inc_dec/number_inc_dec.dart';
+//import 'package:number_inc_dec/number_inc_dec.dart';
 
 class ProductsGrid extends StatefulWidget {
   // const ProductsGrid({Key key, this.groupId, this.subGroupId})
@@ -183,6 +183,9 @@ class _ProductsGridState extends State<ProductsGrid> {
                                     width: 45,
                                   ),
                                   getDropDownForQuantity(item),
+                                  // NumberInputPrefabbed.directionalButtons(
+                                  //   min: 0,
+                                  //     controller: null)
                                 ],
                               ),
                               Row(

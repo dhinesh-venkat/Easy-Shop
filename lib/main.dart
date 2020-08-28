@@ -1,3 +1,4 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:easy_shop/screens/cart_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -15,9 +16,12 @@ void setupLocator() {
 void main() {
   setupLocator();
   runApp(
-    MyApp(),
+    DevicePreview(builder: (context) => MyApp(),)
+    
   );
 }
+
+
 
 class MyApp extends StatelessWidget {
   const MyApp({Key key}) : super(key: key);
