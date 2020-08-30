@@ -69,24 +69,21 @@ class _ProductsGridState extends State<ProductsGrid> {
         'sr': _apiResponse.data[i].data[0].sellingRate
       });
     }
-    print(_prices);
-    print(_selectedPrices);
     setState(() {
       _isLoading = false;
     });
   }
 
   void onSelectedPackage(String value, int index) {
-    for (int i = 0; i < _prices[index]['mrp'].length; i++) {
-      if (_prices[index]['mrp'][i] == value) {
+    for (int i = 0; i < _apiResponse.data[index].data.length; i++) {
+      if (_apiResponse.data[index].data[i].packingQty == value) {
         _temp = i;
       }
-      print(value);
-      print(_prices[index]['mrp'][i]);
     }
     setState(() {
       _selectedPackage[index] = value;
       _selectedPrices[index]['mrp'] = _prices[index]['mrp'][_temp];
+      _selectedPrices[index]['sr'] = _prices[index]['sr'][_temp];
     });
   }
 
