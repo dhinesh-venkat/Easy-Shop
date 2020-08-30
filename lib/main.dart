@@ -1,4 +1,4 @@
-import 'package:device_preview/device_preview.dart';
+// import 'package:device_preview/device_preview.dart';
 import 'package:easy_shop/screens/cart_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -16,8 +16,8 @@ void setupLocator() {
 void main() {
   setupLocator();
   runApp(
-    DevicePreview(builder: (context) => MyApp(),)
-    
+   // DevicePreview(builder: (context) => MyApp(),)
+    MyApp(),
   );
 }
 
