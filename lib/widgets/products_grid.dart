@@ -24,9 +24,11 @@ class _ProductsGridState extends State<ProductsGrid> {
   bool _isLoading = false;
   List<String> _selectedPackage = [];
   List<bool> _favorites = [];
-  List<double> _prices = [];
+  //List<double> _prices = [];
   List<int> _quantities = [];
-
+  List<Map<String, List<String>>> _prices = [];
+  List<Map<String, String>> _selectedPrices = [];
+  int _temp = 0;
 
   TextStyle itemNameText = const TextStyle(
       color: Colors.cyan,
@@ -57,17 +59,34 @@ class _ProductsGridState extends State<ProductsGrid> {
       _selectedPackage.add(_apiResponse.data[i].data[0].packingQty);
       _favorites.add(false);
       _quantities.add(1);
-      _prices.add(double.parse(_apiResponse.data[i].data[0].mRP));
+      //_prices.add(double.parse(_apiResponse.data[i].data[0].mRP));
+      _prices.add({
+        'mrp': _apiResponse.data[i].data.map((e) => e.mRP).toList(),
+        'sr': _apiResponse.data[i].data.map((e) => e.sellingRate).toList(),
+      });
+      _selectedPrices.add({
+        'mrp': _apiResponse.data[i].data[0].mRP,
+        'sr': _apiResponse.data[i].data[0].sellingRate
+      });
     }
+    print(_prices);
+    print(_selectedPrices);
     setState(() {
       _isLoading = false;
     });
   }
 
   void onSelectedPackage(String value, int index) {
+    for (int i = 0; i < _prices[index]['mrp'].length; i++) {
+      if (_prices[index]['mrp'][i] == value) {
+        _temp = i;
+      }
+      print(value);
+      print(_prices[index]['mrp'][i]);
+    }
     setState(() {
       _selectedPackage[index] = value;
-
+      _selectedPrices[index]['mrp'] = _prices[index]['mrp'][_temp];
     });
   }
 
@@ -80,7 +99,7 @@ class _ProductsGridState extends State<ProductsGrid> {
   void sub(value) {
     setState(() {
       if (_quantities[value] > 1) {
-         _quantities[value]--;
+        _quantities[value]--;
       }
     });
   }
@@ -90,7 +109,7 @@ class _ProductsGridState extends State<ProductsGrid> {
     print("GroupId" + widget.groupId);
     print("SubGroupId" + widget.subGroupId);
     return SafeArea(
-          child: Builder(
+      child: Builder(
         builder: (context) {
           if (_isLoading) {
             return Center(
@@ -120,21 +139,18 @@ class _ProductsGridState extends State<ProductsGrid> {
                         height: 180,
                         width: 180,
                         decoration: BoxDecoration(
-                          color: Colors.grey.shade200,
-                          borderRadius: BorderRadius.circular(15),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.blueGrey.withOpacity(0.2),
-                              offset: Offset(10, 10),
-                              blurRadius: 10
-                            ),
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.7),
-                              offset: Offset(-10, -10),
-                              blurRadius: 10
-                            ),
-                          ]
-                        ),
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.blueGrey.withOpacity(0.2),
+                                  offset: Offset(10, 10),
+                                  blurRadius: 10),
+                              BoxShadow(
+                                  color: Colors.black.withOpacity(0.7),
+                                  offset: Offset(-10, -10),
+                                  blurRadius: 10),
+                            ]),
                         child: RaisedButton(
                           color: Colors.white,
                           elevation: 20,
@@ -170,7 +186,8 @@ class _ProductsGridState extends State<ProductsGrid> {
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Text(
-                                    '₹ ${_apiResponse.data[item].data[0].mRP}',
+                                    //  '₹ ${_apiResponse.data[item].data[0].mRP}',
+                                    '₹ ' + _selectedPrices[item]['mrp'],
                                     style: TextStyle(
                                         decoration: TextDecoration.lineThrough,
                                         color: Colors.yellow),
@@ -179,7 +196,8 @@ class _ProductsGridState extends State<ProductsGrid> {
                                     width: 45,
                                   ),
                                   Text(
-                                    '₹ ${_apiResponse.data[item].data[0].sellingRate}',
+                                    //  '₹ ${_apiResponse.data[item].data[0].sellingRate}',
+                                    '₹ ' + _selectedPrices[item]['sr'],
                                     style: priceText,
                                   )
                                 ],
@@ -207,7 +225,7 @@ class _ProductsGridState extends State<ProductsGrid> {
                                           width: 20,
                                           child: FloatingActionButton(
                                             backgroundColor: Colors.white,
-                                            onPressed:()=> add(item),
+                                            onPressed: () => add(item),
                                             child: Icon(
                                               Icons.add,
                                               size: 12,
