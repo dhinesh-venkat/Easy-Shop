@@ -27,8 +27,9 @@ dependencies:
   http: ^0.12.2
   gradient_widgets: ^0.5.1
   carousel_slider: ^2.2.1
-  cached_network_image: ^2.2.0+1
   flutter_screenutil: ^2.3.0
+  cached_network_image: ^2.3.1
+
 #  device_preview:
 
   # The following adds the Cupertino Icons font to your application.

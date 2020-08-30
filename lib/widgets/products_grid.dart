@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_shop/models/api_response.dart';
 import 'package:easy_shop/models/product.dart';
 import 'package:easy_shop/services/product_service.dart';
@@ -156,14 +157,11 @@ class _ProductsGridState extends State<ProductsGrid> {
                           onPressed: () {
                             print(_apiResponse.data[item].itemName);
                           },
-                          // child: Image.network(
-                          //   _apiResponse.data[item].imageName,
-                          //   width: 100,
-                          // ),
-                          child: FadeInImage.assetNetwork(
-                            placeholder: "assets/images/no_image.png",
-                            image: _apiResponse.data[item].imageName,
-                            width: 100,
+                          child:Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: CachedNetworkImage(
+                              placeholder: (context, url) => Image.network('https://cdn.pixabay.com/photo/2017/03/09/12/31/error-2129569_960_720.jpg'),
+                              imageUrl: _apiResponse.data[item].imageName),
                           ),
                         ),
                       ),
