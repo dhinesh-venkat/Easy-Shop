@@ -2,10 +2,12 @@
 import 'package:easy_shop/screens/cart_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart';
 import './screens/homepage.dart';
 import './services/group_service.dart';
 import './services/sub_group_service.dart';
 import './services/product_service.dart';
+import './models/cart.dart';
 
 void setupLocator() {
   GetIt.I.registerLazySingleton(() => GroupService());
@@ -17,7 +19,8 @@ void main() {
   setupLocator();
   runApp(
    // DevicePreview(builder: (context) => MyApp(),)
-    MyApp(),
+    ChangeNotifierProvider(create: (context) => Cart(),
+    child: MyApp(),)
   );
 }
 

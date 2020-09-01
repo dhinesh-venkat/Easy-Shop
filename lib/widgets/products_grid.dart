@@ -3,7 +3,10 @@ import 'package:easy_shop/models/api_response.dart';
 import 'package:easy_shop/models/product.dart';
 import 'package:easy_shop/services/product_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart';
+import '../models/cart.dart';
 //import 'package:number_inc_dec/number_inc_dec.dart';
 
 class ProductsGrid extends StatefulWidget {
@@ -102,8 +105,13 @@ class _ProductsGridState extends State<ProductsGrid> {
     });
   }
 
+  double getTotal(int quantity, String price) {
+    return quantity * double.parse(price);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final cart = Provider.of<Cart>(context, listen: false);
     print("GroupId" + widget.groupId);
     print("SubGroupId" + widget.subGroupId);
     return SafeArea(
@@ -157,11 +165,12 @@ class _ProductsGridState extends State<ProductsGrid> {
                           onPressed: () {
                             print(_apiResponse.data[item].itemName);
                           },
-                          child:Padding(
+                          child: Padding(
                             padding: const EdgeInsets.all(20.0),
                             child: CachedNetworkImage(
-                              placeholder: (context, url) => Image.network('https://cdn.pixabay.com/photo/2017/03/09/12/31/error-2129569_960_720.jpg'),
-                              imageUrl: _apiResponse.data[item].imageName),
+                                placeholder: (context, url) => Image.network(
+                                    'https://cdn.pixabay.com/photo/2017/03/09/12/31/error-2129569_960_720.jpg'),
+                                imageUrl: _apiResponse.data[item].imageName),
                           ),
                         ),
                       ),
@@ -273,8 +282,33 @@ class _ProductsGridState extends State<ProductsGrid> {
                                         size: 30,
                                       ),
                                       onPressed: () {
-                                        print(
-                                            "Added ${_apiResponse.data[item].itemName}");
+                                        HapticFeedback.lightImpact();
+                                        cart.addItem(
+                                          _apiResponse.data[item].itemId +
+                                              _apiResponse
+                                                  .data[item].data[_temp].code,
+                                          double.parse(
+                                              _selectedPrices[item]['sr']),
+                                          _apiResponse.data[item].itemName,
+                                          Image.network(_apiResponse
+                                              .data[item].imageName),
+                                          getTotal(_quantities[item], _selectedPrices[item]['sr']),
+                                          _quantities[item],
+                                        );
+                                        Scaffold.of(context)
+                                            .hideCurrentSnackBar();
+                                        Scaffold.of(context)
+                                            .showSnackBar(SnackBar(
+                                          content: Text('Added to cart'),
+                                          duration: Duration(seconds: 2),
+                                          action: SnackBarAction(
+                                            label: "Undo",
+                                            onPressed: () {
+                                              cart.removeSingleItem(_apiResponse
+                                                  .data[item].itemId);
+                                            },
+                                          ),
+                                        ));
                                       })
                                 ],
                               ),
