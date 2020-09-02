@@ -290,8 +290,8 @@ class _ProductsGridState extends State<ProductsGrid> {
                                           double.parse(
                                               _selectedPrices[item]['sr']),
                                           _apiResponse.data[item].itemName,
-                                          Image.network(_apiResponse
-                                              .data[item].imageName),
+                                          _apiResponse
+                                              .data[item].imageName,
                                           getTotal(_quantities[item], _selectedPrices[item]['sr']),
                                           _quantities[item],
                                         );

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class CartItem {
   String itemId;
-  Image imageUrl;
+  String imageUrl;
   String itemName;
   int quantity;
   double rate;
@@ -41,7 +41,7 @@ class Cart with ChangeNotifier {
     String productId,
     double price,
     String title,
-    Image imageUrl,
+    String imageUrl,
     double total,
     int quantity,
   ) {
