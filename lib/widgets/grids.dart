@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get_it/get_it.dart';
 import '../screens/sub_groups.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class Grids extends StatefulWidget {
   //const Grids({Key key}) : super(key: key);
@@ -96,14 +97,11 @@ class _GridsState extends State<Grids> {
                                       groupTitle: _apiResponse.data[item].value,
                                     )));
                           },
-                          // child: Image.network(
-                          //   _apiResponse.data[item].imageUrl,
-                          //   width: 100,
-                          // ),
-                          child: FadeInImage.assetNetwork(
-                            placeholder: "assets/images/no_image.png",
-                            image: _apiResponse.data[item].imageUrl,
-                            width: 100,
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: CachedNetworkImage(
+                              placeholder: (context, url) => Image.network('https://cdn.pixabay.com/photo/2017/03/09/12/31/error-2129569_960_720.jpg'),
+                              imageUrl: _apiResponse.data[item].imageUrl),
                           ),
                         ),
                       ),
