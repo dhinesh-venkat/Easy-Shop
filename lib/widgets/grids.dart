@@ -39,85 +39,83 @@ class _GridsState extends State<Grids> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Builder(
-        builder: (_) {
-          if (_isLoading) {
-            return Center(
-                child: Text(
-              "Loading...",
-              style: TextStyle(color: Colors.white),
-            ));
-          }
-          if (_apiResponse.error) {
-            return Center(child: Text(_apiResponse.errorMessage));
-          }
-          return GridView.builder(
-              physics: ScrollPhysics(),
-              shrinkWrap: true,
-              padding: EdgeInsets.all(10),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 1,
-                crossAxisSpacing: 1,
-                mainAxisSpacing: 1,
-              ),
-              itemCount: _apiResponse.data.length,
-              itemBuilder: (BuildContext _, int item) {
-                return Container(
-                  height: 180,
-                  width: 180,
-                  margin: EdgeInsets.all(1),
-                  child: Stack(
-                    overflow: Overflow.visible,
-                    children: <Widget>[
-                      Container(
-                        height: 180,
-                        width: 180,
-                        decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.5),
-                              spreadRadius: 1.5,
-                              blurRadius: 5,
-                              offset:
-                                  Offset(0, 3), // changes position of shadow
-                            ),
-                          ],
-                        ),
-                        child: RaisedButton(
-                          color: Colors.white,
-                          elevation: 20,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5)),
-                          onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (_) => SubGroupScreen(
-                                      groupID: _apiResponse.data[item].id,
-                                      groupTitle: _apiResponse.data[item].value,
-                                    )));
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: CachedNetworkImage(
-                              placeholder: (context, url) => Image.network('https://cdn.pixabay.com/photo/2017/03/09/12/31/error-2129569_960_720.jpg'),
-                              imageUrl: _apiResponse.data[item].imageUrl),
+    return Builder(
+      builder: (_) {
+        if (_isLoading) {
+          return Center(
+              child: Text(
+            "Loading...",
+            style: TextStyle(color: Colors.white),
+          ));
+        }
+        if (_apiResponse.error) {
+          return Center(child: Text(_apiResponse.errorMessage));
+        }
+        return GridView.builder(
+            physics: ScrollPhysics(),
+            shrinkWrap: true,
+            padding: EdgeInsets.all(10),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 1,
+              crossAxisSpacing: 1,
+              mainAxisSpacing: 1,
+            ),
+            itemCount: _apiResponse.data.length,
+            itemBuilder: (BuildContext _, int item) {
+              return Container(
+                height: 180,
+                width: 180,
+                margin: EdgeInsets.all(1),
+                child: Stack(
+                  overflow: Overflow.visible,
+                  children: <Widget>[
+                    Container(
+                      height: 180,
+                      width: 180,
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.5),
+                            spreadRadius: 1.5,
+                            blurRadius: 5,
+                            offset:
+                                Offset(0, 3), // changes position of shadow
                           ),
+                        ],
+                      ),
+                      child: RaisedButton(
+                        color: Colors.white,
+                        elevation: 20,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5)),
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => SubGroupScreen(
+                                    groupID: _apiResponse.data[item].id,
+                                    groupTitle: _apiResponse.data[item].value,
+                                  )));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: CachedNetworkImage(
+                            placeholder: (context, url) => Image.network('https://cdn.pixabay.com/photo/2017/03/09/12/31/error-2129569_960_720.jpg'),
+                            imageUrl: _apiResponse.data[item].imageUrl),
                         ),
                       ),
-                      Positioned(
-                          bottom: 15,
-                          left: 50,
-                          child: Text(_apiResponse.data[item].value,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black)))
-                    ],
-                  ),
-                );
-              });
-        },
-      ),
+                    ),
+                    Positioned(
+                        bottom: 15,
+                        left: 50,
+                        child: Text(_apiResponse.data[item].value,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black)))
+                  ],
+                ),
+              );
+            });
+      },
     );
   }
 }
