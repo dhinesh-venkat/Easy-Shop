@@ -1,6 +1,7 @@
 import 'package:easy_shop/models/api_response.dart';
 import 'package:easy_shop/models/group.dart';
 import 'package:easy_shop/services/group_service.dart';
+import 'package:easy_shop/widgets/loading_animation.dart';
 import 'package:easy_shop/widgets/subgroup_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -78,7 +79,8 @@ class _SubGroupScreenState extends State<SubGroupScreen> {
     return Builder(
       builder: (context) {
         if (_isLoading) {
-          return Center(child: CircularProgressIndicator());
+          // return Center(child: CircularProgressIndicator());
+          return loadingAnimation();
         }
         if (_apiResponse.error) {
           return Center(child: Text(_apiResponse.errorMessage));
@@ -89,6 +91,7 @@ class _SubGroupScreenState extends State<SubGroupScreen> {
           child: Scaffold(
               backgroundColor: Theme.of(context).primaryColor,
               appBar: AppBar(
+                elevation: 0.0,
                 actions: [
                   IconButton(
                       icon: Icon(Icons.shopping_cart),

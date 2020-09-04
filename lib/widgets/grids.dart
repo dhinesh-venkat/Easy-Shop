@@ -76,41 +76,45 @@ class _GridsState extends State<Grids> {
                       decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.5),
-                            spreadRadius: 1.5,
-                            blurRadius: 5,
-                            offset:
-                                Offset(0, 3), // changes position of shadow
-                          ),
+                              color: Colors.blueGrey.withOpacity(0.2),
+                              offset: Offset(5, 5),
+                              blurRadius: 10),
+                          BoxShadow(
+                              color: Colors.black.withOpacity(0.7),
+                              offset: Offset(-5, -5),
+                              blurRadius: 10),
                         ],
                       ),
-                      child: RaisedButton(
-                        color: Colors.white,
-                        elevation: 20,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5)),
-                        onPressed: () {
+                      child: GestureDetector(
+                        onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (_) => SubGroupScreen(
                                     groupID: _apiResponse.data[item].id,
                                     groupTitle: _apiResponse.data[item].value,
                                   )));
                         },
-                        child: Padding(
-                          padding: const EdgeInsets.all(20.0),
+                        child: Container(
+                          padding: EdgeInsets.all(40.0),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5.0)),
                           child: CachedNetworkImage(
-                            placeholder: (context, url) => Image.network('https://cdn.pixabay.com/photo/2017/03/09/12/31/error-2129569_960_720.jpg'),
-                            imageUrl: _apiResponse.data[item].imageUrl),
+                              placeholder: (context, url) => Image.network(
+                                  'https://cdn.pixabay.com/photo/2017/03/09/12/31/error-2129569_960_720.jpg'),
+                              imageUrl: _apiResponse.data[item].imageUrl),
                         ),
                       ),
                     ),
-                    Positioned(
-                        bottom: 15,
-                        left: 50,
-                        child: Text(_apiResponse.data[item].value,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black)))
+                    Positioned.fill(
+                        bottom: 20,
+                        child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Text(_apiResponse.data[item].value,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black)),
+                        ))
                   ],
                 ),
               );

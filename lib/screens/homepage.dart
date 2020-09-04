@@ -32,6 +32,8 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
+        elevation: 0.0,
+        bottomOpacity: 0.0,
         actions: [
           IconButton(
               icon: Icon(Icons.shopping_cart),
