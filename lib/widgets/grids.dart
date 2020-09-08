@@ -68,13 +68,15 @@ class _GridsState extends State<Grids> {
             itemCount: _apiResponse.data.length,
             itemBuilder: (BuildContext _, int item) {
               return Container(
+                height: 180,
+                width: 180,
                 margin: EdgeInsets.all(1),
                 child: Stack(
                   overflow: Overflow.visible,
                   children: <Widget>[
                     Container(
-                      height: sy(1000),
-                      width: sy(1000),
+                      height: sy(500),
+                      width: sy(500),
                       decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
