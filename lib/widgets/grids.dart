@@ -6,6 +6,7 @@ import 'package:flutter/rendering.dart';
 import 'package:get_it/get_it.dart';
 import '../screens/sub_groups.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:relative_scale/relative_scale.dart';
 
 class Grids extends StatefulWidget {
   //const Grids({Key key}) : super(key: key);
@@ -15,6 +16,7 @@ class Grids extends StatefulWidget {
 }
 
 class _GridsState extends State<Grids> {
+  
   GroupService get service => GetIt.I<GroupService>();
 
   APIResponse<List<Group>> _apiResponse;
@@ -39,8 +41,10 @@ class _GridsState extends State<Grids> {
 
   @override
   Widget build(BuildContext context) {
-    return Builder(
-      builder: (_) {
+    final deviceWidth = MediaQuery.of(context).size.width;
+    final deviceHeight = MediaQuery.of(context).size.height;
+    return RelativeBuilder(
+      builder: (context,screenHeight,screenWidth,sy,sx) {
         if (_isLoading) {
           return Center(
               child: Text(
@@ -56,7 +60,7 @@ class _GridsState extends State<Grids> {
             shrinkWrap: true,
             padding: EdgeInsets.all(10),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
+              crossAxisCount: deviceWidth > deviceHeight ? 5 : 2,
               childAspectRatio: 1,
               crossAxisSpacing: 1,
               mainAxisSpacing: 1,
@@ -64,15 +68,13 @@ class _GridsState extends State<Grids> {
             itemCount: _apiResponse.data.length,
             itemBuilder: (BuildContext _, int item) {
               return Container(
-                height: 180,
-                width: 180,
                 margin: EdgeInsets.all(1),
                 child: Stack(
                   overflow: Overflow.visible,
                   children: <Widget>[
                     Container(
-                      height: 180,
-                      width: 180,
+                      height: sy(1000),
+                      width: sy(1000),
                       decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
@@ -106,7 +108,7 @@ class _GridsState extends State<Grids> {
                       ),
                     ),
                     Positioned.fill(
-                        bottom: 20,
+                      bottom: 20,
                         child: Align(
                           alignment: Alignment.bottomCenter,
                           child: Text(_apiResponse.data[item].value,

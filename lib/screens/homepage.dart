@@ -1,6 +1,7 @@
 import 'package:easy_shop/widgets/grids.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:relative_scale/relative_scale.dart';
 import '../screens/cart_screen.dart';
 
 class HomePage extends StatelessWidget {
@@ -29,50 +30,61 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
-      appBar: AppBar(
-        elevation: 0.0,
-        bottomOpacity: 0.0,
-        actions: [
-          IconButton(
-              icon: Icon(Icons.shopping_cart),
-              color: Colors.blue,
-              onPressed: () {
-                Navigator.of(context).pushNamed(CartScreen.routeName);
-              })
-        ],
-        backgroundColor: Theme.of(context).primaryColor,
-        title: Text(
-          "Easy Shop",
-          style: TextStyle(
-              color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-      ),
-      body: ListView(
-        shrinkWrap: true,
-        children: <Widget>[
-          SizedBox(
-            child: Container(
-              height: 150,
-              width: double.infinity,
-              margin: EdgeInsets.only(left: 5, right: 5,top: 5),
-              child: CarouselSlider(
-                items: imageSliders,
-                options: CarouselOptions(
-                  autoPlay: true,
-                  aspectRatio: 2.0,
-                  enlargeCenterPage: true,
-                ),
-              ),
+    return RelativeBuilder(
+      builder: (context, screenHeight, screenWidth, sy, sx) {
+        return Scaffold(
+          backgroundColor: Theme.of(context).primaryColor,
+          appBar: AppBar(
+            elevation: 0.0,
+            bottomOpacity: 0.0,
+            actions: [
+              IconButton(
+                  icon: Icon(Icons.shopping_cart),
+                  color: Colors.blue,
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(CartScreen.routeName);
+                  })
+            ],
+            backgroundColor: Theme.of(context).primaryColor,
+            title: Text(
+              "Easy Shop",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: sy(20),
+                  fontWeight: FontWeight.bold),
             ),
           ),
-          SizedBox(
-            height: 14,
+          body: ListView(
+            shrinkWrap: true,
+            children: <Widget>[
+              Flexible(
+                flex: 1,
+                child: SizedBox(
+                  child: Container(
+                    height: sy(150),
+                    width: double.infinity,
+                    margin: EdgeInsets.only(left: sx(5), right: sx(5), top: sx(5)),
+                    child: CarouselSlider(
+                      items: imageSliders,
+                      options: CarouselOptions(
+                        autoPlay: true,
+                        aspectRatio: 2.0,
+                        enlargeCenterPage: true,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: sy(14),
+              ),
+              Flexible(
+                flex: 4,
+                child: Grids()),
+            ],
           ),
-          Grids(),
-        ],
-      ),
+        );
+      },
     );
   }
 }

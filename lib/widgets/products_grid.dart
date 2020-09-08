@@ -8,6 +8,7 @@ import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import '../models/cart.dart';
 import './loading_animation.dart';
+import 'package:relative_scale/relative_scale.dart';
 //import 'package:number_inc_dec/number_inc_dec.dart';
 
 class ProductsGrid extends StatefulWidget {
@@ -110,11 +111,13 @@ class _ProductsGridState extends State<ProductsGrid> {
 
   @override
   Widget build(BuildContext context) {
+    final deviceWidth = MediaQuery.of(context).size.width;
+    final deviceHeight = MediaQuery.of(context).size.height;
     final cart = Provider.of<Cart>(context, listen: false);
     print("GroupId : " + widget.groupId);
     print("SubGroupId : " + widget.subGroupId);
-    return Builder(
-      builder: (context) {
+    return RelativeBuilder(
+      builder: (context, screenHeight, screenWidth, sy, sx) {
         if (_isLoading) {
           // return Center(
           //     child: Text(
@@ -132,7 +135,7 @@ class _ProductsGridState extends State<ProductsGrid> {
               physics: ScrollPhysics(),
               shrinkWrap: true,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
+                  crossAxisCount: deviceWidth > deviceHeight ? 5 : 2,
                   mainAxisSpacing: 0,
                   crossAxisSpacing: 0,
                   childAspectRatio: 165 / 300),
@@ -141,8 +144,8 @@ class _ProductsGridState extends State<ProductsGrid> {
                 return Column(
                   children: <Widget>[
                     Container(
-                      height: 180,
-                      width: 180,
+                      height: sy(110),
+                      width: sy(110),
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(15),
@@ -220,8 +223,8 @@ class _ProductsGridState extends State<ProductsGrid> {
                                 Flexible(
                                   flex: 1,
                                   child: Container(
-                                    height: 20,
-                                    width: 120,
+                                    height: sy(20),
+                                    width: sx(120),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceAround,

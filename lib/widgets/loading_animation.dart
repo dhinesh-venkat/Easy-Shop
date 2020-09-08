@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 final String _animationName = 'Cargando';
 
 Widget loadingAnimation() {
-  return FlareActor(
-    "assets/animations/cute_bot.flr",
-    alignment: Alignment.center,
-    fit: BoxFit.contain,
-    animation: _animationName,
+  return Container(
+    child: FlareActor(
+      "assets/animations/cute_bot.flr",
+      alignment: Alignment.center,
+      fit: BoxFit.contain,
+      animation: _animationName,
+    ),
   );
 }
