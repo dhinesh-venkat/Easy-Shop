@@ -28,7 +28,7 @@ class _CartScreenState extends State<CartScreen> {
   void add(value) {
     setState(() {
       _quantities[value]++;
-      _price[value] += _cartList[value].total;
+      _price[value] += _cartList[value].rate;
       _totalAmount += _cartList[value].rate;
     });
   }
@@ -37,7 +37,7 @@ class _CartScreenState extends State<CartScreen> {
     setState(() {
       if (_quantities[value] > 1) {
         _quantities[value]--;
-        _price[value] -= _cartList[value].total;
+        _price[value] -= _cartList[value].rate;
         _totalAmount -= _cartList[value].rate;
       }
     });
@@ -50,7 +50,7 @@ class _CartScreenState extends State<CartScreen> {
     for (var i in cart.items.values) {
       _cartList.add(i);
       _quantities.add(i.quantity);
-      _price.add(i.rate);
+      _price.add(i.rate * i.quantity);
     }
     return Scaffold(
       appBar: AppBar(
@@ -173,7 +173,16 @@ class _CartScreenState extends State<CartScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('₹ ' + item.rate.toString()),
+                  Container(
+                    width: 110,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text('₹ ' + item.rate.toString()),
+                        IconButton(icon: Icon(Icons.delete), onPressed: () {},color: Colors.red,)
+                      ],
+                    ),
+                  ),
                   Container(
                     height: 50,
                     width: 110,

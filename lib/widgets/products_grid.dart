@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import '../models/cart.dart';
+import './loading_animation.dart';
 //import 'package:number_inc_dec/number_inc_dec.dart';
 
 class ProductsGrid extends StatefulWidget {
@@ -28,7 +29,6 @@ class _ProductsGridState extends State<ProductsGrid> {
   bool _isLoading = false;
   List<String> _selectedPackage = [];
   List<bool> _favorites = [];
-  //List<double> _prices = [];
   List<int> _quantities = [];
   List<Map<String, List<String>>> _prices = [];
   List<Map<String, String>> _selectedPrices = [];
@@ -42,9 +42,9 @@ class _ProductsGridState extends State<ProductsGrid> {
 
   TextStyle priceText = const TextStyle(
       color: Colors.white,
-      fontSize: 16,
+      fontSize: 20,
       fontWeight: FontWeight.w800,
-      fontFamily: 'Poppins');
+      fontFamily: 'Fryo');
 
   @override
   void initState() {
@@ -63,7 +63,6 @@ class _ProductsGridState extends State<ProductsGrid> {
       _selectedPackage.add(_apiResponse.data[i].data[0].packingQty);
       _favorites.add(false);
       _quantities.add(1);
-      //_prices.add(double.parse(_apiResponse.data[i].data[0].mRP));
       _prices.add({
         'mrp': _apiResponse.data[i].data.map((e) => e.mRP).toList(),
         'sr': _apiResponse.data[i].data.map((e) => e.sellingRate).toList(),
@@ -112,117 +111,120 @@ class _ProductsGridState extends State<ProductsGrid> {
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<Cart>(context, listen: false);
-    print("GroupId" + widget.groupId);
-    print("SubGroupId" + widget.subGroupId);
-    return SafeArea(
-      child: Builder(
-        builder: (context) {
-          if (_isLoading) {
-            return Center(
-                child: Text(
-              "Loading...",
-              style: TextStyle(color: Colors.black),
-            ));
-          }
-          if (_apiResponse.error) {
-            return Center(child: Text(_apiResponse.errorMessage));
-          }
-          return Scaffold(
-            backgroundColor: Theme.of(context).primaryColor,
-            body: GridView.builder(
-                physics: ScrollPhysics(),
-                shrinkWrap: true,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 0,
-                    crossAxisSpacing: 0,
-                    childAspectRatio: 180 / 300),
-                itemCount: _apiResponse.data.length,
-                itemBuilder: (BuildContext _, int item) {
-                  return Stack(
-                    children: <Widget>[
-                      Container(
-                        height: 180,
-                        width: 180,
-                        decoration: BoxDecoration(
-                            color: Colors.grey.shade200,
-                            borderRadius: BorderRadius.circular(15),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.blueGrey.withOpacity(0.2),
-                                  offset: Offset(10, 10),
-                                  blurRadius: 10),
-                              BoxShadow(
-                                  color: Colors.black.withOpacity(0.7),
-                                  offset: Offset(-10, -10),
-                                  blurRadius: 10),
-                            ]),
-                        child: RaisedButton(
+    print("GroupId : " + widget.groupId);
+    print("SubGroupId : " + widget.subGroupId);
+    return Builder(
+      builder: (context) {
+        if (_isLoading) {
+          // return Center(
+          //     child: Text(
+          //   "Loading...",
+          //   style: TextStyle(color: Colors.black),
+          // ));
+          return loadingAnimation();
+        }
+        if (_apiResponse.error) {
+          return Center(child: Text(_apiResponse.errorMessage));
+        }
+        return Scaffold(
+          backgroundColor: Theme.of(context).primaryColor,
+          body: GridView.builder(
+              physics: ScrollPhysics(),
+              shrinkWrap: true,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 0,
+                  crossAxisSpacing: 0,
+                  childAspectRatio: 165 / 300),
+              itemCount: _apiResponse.data.length,
+              itemBuilder: (BuildContext _, int item) {
+                return Column(
+                  children: <Widget>[
+                    Container(
+                      height: 180,
+                      width: 180,
+                      decoration: BoxDecoration(
                           color: Colors.white,
-                          elevation: 20,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15)),
-                          onPressed: () {
-                            print(_apiResponse.data[item].itemName);
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: CachedNetworkImage(
-                                placeholder: (context, url) => Image.network(
-                                    'https://cdn.pixabay.com/photo/2017/03/09/12/31/error-2129569_960_720.jpg'),
-                                imageUrl: _apiResponse.data[item].imageName),
-                          ),
-                        ),
+                          borderRadius: BorderRadius.circular(15),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.blueGrey.withOpacity(0.2),
+                                offset: Offset(10, 10),
+                                blurRadius: 10),
+                            BoxShadow(
+                                color: Colors.black.withOpacity(0.7),
+                                offset: Offset(-10, -10),
+                                blurRadius: 10),
+                          ]),
+                      child: Padding(
+                        padding: const EdgeInsets.all(40.0),
+                        child: CachedNetworkImage(
+                            placeholder: (context, url) => Image.network(
+                                'https://cdn.pixabay.com/photo/2017/03/09/12/31/error-2129569_960_720.jpg'),
+                            imageUrl: _apiResponse.data[item].imageName),
                       ),
-                      Positioned(
-                          bottom: 10,
-                          left: 0,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                _apiResponse.data[item].itemName,
-                                style: itemNameText,
+                    ),
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.all(8),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: FittedBox(
+                                child: Text(
+                                  _apiResponse.data[item].itemName,
+                                  style: itemNameText,
+                                ),
                               ),
-                              Row(
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  Text(
-                                    //  '₹ ${_apiResponse.data[item].data[0].mRP}',
-                                    '₹ ' + _selectedPrices[item]['mrp'],
-                                    style: TextStyle(
-                                        decoration: TextDecoration.lineThrough,
-                                        color: Colors.yellow),
+                                  Flexible(
+                                    flex: 1,
+                                    child: Text(
+                                      '₹ ' + _selectedPrices[item]['mrp'],
+                                      style: TextStyle(
+                                          decoration:
+                                              TextDecoration.lineThrough,
+                                          color: Colors.yellow),
+                                    ),
                                   ),
-                                  SizedBox(
-                                    width: 45,
-                                  ),
-                                  Text(
-                                    //  '₹ ${_apiResponse.data[item].data[0].sellingRate}',
-                                    '₹ ' + _selectedPrices[item]['sr'],
-                                    style: priceText,
+                                  Flexible(
+                                    flex: 1,
+                                    child: Text(
+                                      '₹ ' + _selectedPrices[item]['sr'],
+                                      style: priceText,
+                                    ),
                                   )
                                 ],
                               ),
-                              Row(
-                                children: <Widget>[
-                                  getDropDownForPacking(
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: <Widget>[
+                                Flexible(
+                                  flex: 1,
+                                  child: getDropDownForPacking(
                                       _apiResponse.data[item].data
                                           .map((e) => e.packingQty)
                                           .toList(),
                                       item),
-                                  // SizedBox(
-                                  //   width: 45,
-                                  // ),
-                                  //getDropDownForQuantity(item),
-                                  Container(
+                                ),
+                                Flexible(
+                                  flex: 1,
+                                  child: Container(
                                     height: 20,
                                     width: 120,
                                     child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
+                                          MainAxisAlignment.spaceAround,
                                       children: <Widget>[
                                         Container(
                                           height: 20,
@@ -251,75 +253,77 @@ class _ProductsGridState extends State<ProductsGrid> {
                                         )
                                       ],
                                     ),
-                                  )
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  IconButton(
-                                      icon: _favorites[item]
-                                          ? Icon(
-                                              Icons.favorite,
-                                              color: Colors.red,
-                                            )
-                                          : Icon(
-                                              Icons.favorite_border,
-                                              color: Colors.red,
-                                            ),
-                                      onPressed: () {
-                                        setState(() {
-                                          _favorites[item] = !_favorites[item];
-                                        });
-                                      }),
-                                  // SizedBox(
-                                  //   width: 45,
-                                  // ),
-                                  IconButton(
-                                      icon: Icon(
-                                        Icons.shopping_cart_rounded,
-                                        color: Colors.blue,
-                                        size: 30,
-                                      ),
-                                      onPressed: () {
-                                        HapticFeedback.lightImpact();
-                                        cart.addItem(
-                                          _apiResponse.data[item].itemId +
-                                              _apiResponse
-                                                  .data[item].data[_temp].code,
-                                          double.parse(
-                                              _selectedPrices[item]['sr']),
-                                          _apiResponse.data[item].itemName,
-                                          _apiResponse
-                                              .data[item].imageName,
-                                          getTotal(_quantities[item], _selectedPrices[item]['sr']),
-                                          _quantities[item],
-                                        );
-                                        Scaffold.of(context)
-                                            .hideCurrentSnackBar();
-                                        Scaffold.of(context)
-                                            .showSnackBar(SnackBar(
-                                          content: Text('Added to cart'),
-                                          duration: Duration(seconds: 2),
-                                          action: SnackBarAction(
-                                            label: "Undo",
-                                            onPressed: () {
-                                              cart.removeSingleItem(_apiResponse
-                                                  .data[item].itemId);
-                                            },
+                                  ),
+                                )
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                IconButton(
+                                    icon: _favorites[item]
+                                        ? Icon(
+                                            Icons.favorite,
+                                            color: Colors.red,
+                                          )
+                                        : Icon(
+                                            Icons.favorite_border,
+                                            color: Colors.red,
                                           ),
-                                        ));
-                                      })
-                                ],
-                              ),
-                            ],
-                          )),
-                    ],
-                  );
-                }),
-          );
-        },
-      ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _favorites[item] = !_favorites[item];
+                                      });
+                                    }),
+                                // SizedBox(
+                                //   width: 45,
+                                // ),
+                                IconButton(
+                                    icon: Icon(
+                                      Icons.shopping_cart_rounded,
+                                      color: Colors.blue,
+                                      size: 30,
+                                    ),
+                                    onPressed: () {
+                                      HapticFeedback.lightImpact();
+                                      cart.addItem(
+                                        _apiResponse.data[item].itemId +
+                                            _apiResponse
+                                                .data[item].data[_temp].code,
+                                        double.parse(
+                                            _selectedPrices[item]['sr']),
+                                        _apiResponse.data[item].itemName,
+                                        _apiResponse.data[item].imageName,
+                                        getTotal(_quantities[item],
+                                            _selectedPrices[item]['sr']),
+                                        _quantities[item],
+                                      );
+                                      Scaffold.of(context)
+                                          .hideCurrentSnackBar();
+                                      Scaffold.of(context)
+                                          .showSnackBar(SnackBar(
+                                        content: Text('Added to cart'),
+                                        duration: Duration(seconds: 2),
+                                        action: SnackBarAction(
+                                          label: "Undo",
+                                          onPressed: () {
+                                            cart.removeSingleItem(
+                                                _apiResponse.data[item].itemId);
+                                          },
+                                        ),
+                                      ));
+                                    })
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              }),
+        );
+      },
     );
   }
 

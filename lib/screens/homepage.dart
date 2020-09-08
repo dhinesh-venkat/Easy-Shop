@@ -32,6 +32,8 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
+        elevation: 0.0,
+        bottomOpacity: 0.0,
         actions: [
           IconButton(
               icon: Icon(Icons.shopping_cart),
@@ -52,7 +54,7 @@ class HomePage extends StatelessWidget {
         children: <Widget>[
           SizedBox(
             child: Container(
-              height: 125,
+              height: 150,
               width: double.infinity,
               margin: EdgeInsets.only(left: 5, right: 5,top: 5),
               child: CarouselSlider(
