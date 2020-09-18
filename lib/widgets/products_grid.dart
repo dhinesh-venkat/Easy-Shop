@@ -111,8 +111,10 @@ class _ProductsGridState extends State<ProductsGrid> {
 
   @override
   Widget build(BuildContext context) {
-    final deviceWidth = MediaQuery.of(context).size.width;
-    final deviceHeight = MediaQuery.of(context).size.height;
+    final double deviceWidth = MediaQuery.of(context).size.width;
+    final double deviceHeight = MediaQuery.of(context).size.height;
+    print(deviceHeight);
+    final double _childAspectRatio = deviceHeight / 1100;
     final cart = Provider.of<Cart>(context, listen: false);
     print("GroupId : " + widget.groupId);
     print("SubGroupId : " + widget.subGroupId);
@@ -138,7 +140,7 @@ class _ProductsGridState extends State<ProductsGrid> {
                   crossAxisCount: deviceWidth > deviceHeight ? 5 : 2,
                   mainAxisSpacing: 0,
                   crossAxisSpacing: 0,
-                  childAspectRatio: 165 / 300),
+                  childAspectRatio: 1 / 2),
               itemCount: _apiResponse.data.length,
               itemBuilder: (BuildContext _, int item) {
                 return Column(
