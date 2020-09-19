@@ -31,6 +31,7 @@ class _ProductsGridState extends State<ProductsGrid> {
   List<String> _selectedPackage = [];
   List<bool> _favorites = [];
   List<int> _quantities = [];
+  List<bool> _isAdded = [];
   List<Map<String, List<String>>> _prices = [];
   List<Map<String, String>> _selectedPrices = [];
   int _temp = 0;
@@ -63,6 +64,7 @@ class _ProductsGridState extends State<ProductsGrid> {
     for (int i = 0; i < _apiResponse.data.length; i++) {
       _selectedPackage.add(_apiResponse.data[i].data[0].packingQty);
       _favorites.add(false);
+      _isAdded.add(false);
       _quantities.add(1);
       _prices.add({
         'mrp': _apiResponse.data[i].data.map((e) => e.mRP).toList(),
@@ -140,7 +142,7 @@ class _ProductsGridState extends State<ProductsGrid> {
                   crossAxisCount: deviceWidth > deviceHeight ? 5 : 2,
                   mainAxisSpacing: 0,
                   crossAxisSpacing: 0,
-                  childAspectRatio: 1 / 2),
+                  childAspectRatio: 4 / 5),
               itemCount: _apiResponse.data.length,
               itemBuilder: (BuildContext _, int item) {
                 return Column(
@@ -178,10 +180,12 @@ class _ProductsGridState extends State<ProductsGrid> {
                           children: <Widget>[
                             Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: FittedBox(
-                                child: Text(
-                                  _apiResponse.data[item].itemName,
-                                  style: itemNameText,
+                              child: Center(
+                                child: FittedBox(
+                                  child: Text(
+                                    _apiResponse.data[item].itemName,
+                                    style: itemNameText,
+                                  ),
                                 ),
                               ),
                             ),
@@ -189,7 +193,7 @@ class _ProductsGridState extends State<ProductsGrid> {
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceAround,
                                 children: <Widget>[
                                   Flexible(
                                     flex: 1,
@@ -222,44 +226,91 @@ class _ProductsGridState extends State<ProductsGrid> {
                                           .toList(),
                                       item),
                                 ),
-                                Flexible(
-                                  flex: 1,
-                                  child: Container(
-                                    height: sy(20),
-                                    width: sx(120),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: <Widget>[
-                                        Container(
-                                          height: 20,
-                                          width: 20,
-                                          child: FloatingActionButton(
-                                            backgroundColor: Colors.white,
-                                            onPressed: () => add(item),
-                                            child: Icon(
-                                              Icons.add,
-                                              size: 12,
-                                            ),
+                                _isAdded[item]
+                                    ? Flexible(
+                                        flex: 1,
+                                        child: Container(
+                                          height: sy(20),
+                                          width: sx(120),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: <Widget>[
+                                              Container(
+                                                height: 20,
+                                                width: 20,
+                                                child: FloatingActionButton(
+                                                  heroTag: _apiResponse.data[item].itemName + 'add',
+                                                  backgroundColor: Colors.white,
+                                                  onPressed: () => add(item),
+                                                  child: Icon(
+                                                    Icons.add,
+                                                    size: 12,
+                                                  ),
+                                                ),
+                                              ),
+                                              Text(
+                                                _quantities[item].toString(),
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                              Container(
+                                                height: 20,
+                                                width: 20,
+                                                child: FloatingActionButton(
+                                                  heroTag: _apiResponse.data[item].itemName + 'sub',
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                    onPressed: () => sub(item),
+                                                    child: Icon(Icons.remove,
+                                                        size: 12)),
+                                              )
+                                            ],
                                           ),
                                         ),
-                                        Text(
-                                          _quantities[item].toString(),
-                                          style: TextStyle(color: Colors.white),
+                                      )
+                                    : IconButton(
+                                        icon: Icon(
+                                          Icons.shopping_cart,
+                                          color: Colors.blue,
+                                          size: 30,
                                         ),
-                                        Container(
-                                          height: 20,
-                                          width: 20,
-                                          child: FloatingActionButton(
-                                              backgroundColor: Colors.white,
-                                              onPressed: () => sub(item),
-                                              child:
-                                                  Icon(Icons.remove, size: 12)),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                )
+                                        onPressed: () {
+                                          setState(() {
+                                            _isAdded[item] = true;
+                                          });
+                                          HapticFeedback.lightImpact();
+                                          cart.addItem(
+                                            _apiResponse.data[item].itemId +
+                                                _apiResponse.data[item]
+                                                    .data[_temp].code,
+                                            double.parse(
+                                                _selectedPrices[item]['sr']),
+                                            _apiResponse.data[item].itemName,
+                                            _apiResponse.data[item].imageName,
+                                            getTotal(_quantities[item],
+                                                _selectedPrices[item]['sr']),
+                                            _quantities[item],
+                                          );
+                                          Scaffold.of(context)
+                                              .hideCurrentSnackBar();
+                                          Scaffold.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content: Text('Added to cart'),
+                                            duration: Duration(seconds: 2),
+                                            action: SnackBarAction(
+                                              label: "Undo",
+                                              onPressed: () {
+                                                setState(() {
+                                                  _isAdded[item] = false;
+                                                });
+                                                cart.removeSingleItem(
+                                                    _apiResponse
+                                                        .data[item].itemId);
+                                              },
+                                            ),
+                                          ));
+                                        })
                               ],
                             ),
                             Row(
@@ -283,41 +334,6 @@ class _ProductsGridState extends State<ProductsGrid> {
                                 // SizedBox(
                                 //   width: 45,
                                 // ),
-                                IconButton(
-                                    icon: Icon(
-                                      Icons.shopping_cart_rounded,
-                                      color: Colors.blue,
-                                      size: 30,
-                                    ),
-                                    onPressed: () {
-                                      HapticFeedback.lightImpact();
-                                      cart.addItem(
-                                        _apiResponse.data[item].itemId +
-                                            _apiResponse
-                                                .data[item].data[_temp].code,
-                                        double.parse(
-                                            _selectedPrices[item]['sr']),
-                                        _apiResponse.data[item].itemName,
-                                        _apiResponse.data[item].imageName,
-                                        getTotal(_quantities[item],
-                                            _selectedPrices[item]['sr']),
-                                        _quantities[item],
-                                      );
-                                      Scaffold.of(context)
-                                          .hideCurrentSnackBar();
-                                      Scaffold.of(context)
-                                          .showSnackBar(SnackBar(
-                                        content: Text('Added to cart'),
-                                        duration: Duration(seconds: 2),
-                                        action: SnackBarAction(
-                                          label: "Undo",
-                                          onPressed: () {
-                                            cart.removeSingleItem(
-                                                _apiResponse.data[item].itemId);
-                                          },
-                                        ),
-                                      ));
-                                    })
                               ],
                             ),
                           ],
