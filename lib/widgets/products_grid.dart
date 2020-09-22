@@ -114,7 +114,6 @@ class _ProductsGridState extends State<ProductsGrid> {
   }
 
   int getDeviceType(double width) {
-    print("width $width");
     if (width < 700) {
       return 2;
     }
@@ -131,18 +130,12 @@ class _ProductsGridState extends State<ProductsGrid> {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double deviceHeight = MediaQuery.of(context).size.height;
     _crossAxisCount = getDeviceType(deviceWidth);
-    print(deviceHeight);
     final cart = Provider.of<Cart>(context, listen: false);
     print("GroupId : " + widget.groupId);
     print("SubGroupId : " + widget.subGroupId);
     return RelativeBuilder(
       builder: (context, screenHeight, screenWidth, sy, sx) {
         if (_isLoading) {
-          // return Center(
-          //     child: Text(
-          //   "Loading...",
-          //   style: TextStyle(color: Colors.black),
-          // ));
           return loadingAnimation();
         }
         if (_apiResponse.error) {
